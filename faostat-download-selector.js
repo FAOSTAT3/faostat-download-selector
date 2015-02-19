@@ -53,28 +53,43 @@ define(['jquery',
         var html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
 
-        /* Add tab header. */
-        source = $(templates).filter('#tab_header_structure').html();
-        template = Handlebars.compile(source);
-        dynamic_data = {
+        /* Add tab header and content. */
+        this.add_tab_header();
+        this.add_tab_content();
+
+        /* Add tab header and content. */
+        this.add_tab_header();
+        this.add_tab_content();
+
+        /* Add tab header and content. */
+        this.add_tab_header();
+        this.add_tab_content();
+
+        /* Show the first tab. */
+        //$('#tab_headers_1').find('a').tab('show');
+        $($('#tab_headers_1').find('a')[0]).tab('show');
+
+    };
+
+    SELECTOR.prototype.add_tab_header = function() {
+        var source = $(templates).filter('#tab_header_structure').html();
+        var template = Handlebars.compile(source);
+        var dynamic_data = {
             role_id: 'role_1',
             tab_header_label: 'Tab Header'
         };
-        html = template(dynamic_data);
+        var html = template(dynamic_data);
         $('#tab_headers_1').append(html);
+    };
 
-        /* Add tab content. */
-        source = $(templates).filter('#tab_content_structure').html();
-        template = Handlebars.compile(source);
-        dynamic_data = {
+    SELECTOR.prototype.add_tab_content = function() {
+        var source = $(templates).filter('#tab_content_structure').html();
+        var template = Handlebars.compile(source);
+        var dynamic_data = {
             id: 'role_1'
         };
-        html = template(dynamic_data);
+        var html = template(dynamic_data);
         $('#tab_contents_1').append(html);
-
-        /* Show the first tab. */
-        $('#tab_headers_1').find('a').tab('show');
-
     };
 
     return SELECTOR;
