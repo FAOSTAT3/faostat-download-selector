@@ -43,7 +43,7 @@ define(['jquery',
         var template = Handlebars.compile(source);
         var dynamic_data = {
             tab_headers_id: 'tab_headers_1',
-            tab_contents_id: 'tab_contents_id_1',
+            tab_contents_id: 'tab_contents_1',
             go_to_label: translate.go_to,
             clear_all_label: translate.clear_all,
             select_all_label: translate.select_all,
@@ -52,6 +52,28 @@ define(['jquery',
         };
         var html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
+
+        /* Add tab header. */
+        source = $(templates).filter('#tab_header_structure').html();
+        template = Handlebars.compile(source);
+        dynamic_data = {
+            role_id: 'role_1',
+            tab_header_label: 'Tab Header'
+        };
+        html = template(dynamic_data);
+        $('#tab_headers_1').append(html);
+
+        /* Add tab content. */
+        source = $(templates).filter('#tab_content_structure').html();
+        template = Handlebars.compile(source);
+        dynamic_data = {
+            id: 'role_1'
+        };
+        html = template(dynamic_data);
+        $('#tab_contents_1').append(html);
+
+        /* Show the first tab. */
+        $('#tab_headers_1').find('a').tab('show');
 
     };
 
