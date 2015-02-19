@@ -44,9 +44,11 @@ define(['jquery',
         var dynamic_data = {
             tab_headers_id: 'tab_headers_1',
             tab_contents_id: 'tab_contents_id_1',
-            go_to_label: 'Go to...',
-            clear_all_label: 'Clear all',
-            select_all_label: 'Select all'
+            go_to_label: translate.go_to,
+            clear_all_label: translate.clear_all,
+            select_all_label: translate.select_all,
+            select_all_button_id: 'select_all_button_1',
+            clear_all_button_id: 'select_all_button_2'
         };
         var html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
