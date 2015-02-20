@@ -16,16 +16,8 @@ define(['jquery',
             suffix: 'area',
             tabs :   [
                 {
-                    label: 'Countries',
+                    label: 'Test',
                     rest: 'http://faostat3.fao.org/wds/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E'
-                },
-                {
-                    label: 'Regions',
-                    rest: 'http://faostat3.fao.org/wds/rest/procedures/usp_GetListBox/faostatdb/GT/1/2/E'
-                },
-                {
-                    label: 'Special Groups',
-                    rest: 'http://faostat3.fao.org/wds/rest/procedures/usp_GetListBox/faostatdb/GT/1/3/E'
                 }
             ]
         };
@@ -50,7 +42,8 @@ define(['jquery',
             clear_all_label: translate.clear_all,
             select_all_label: translate.select_all,
             select_all_button_id: 'select_all_button_' + this.CONFIG.suffix,
-            clear_all_button_id: 'clear_all_button_' + this.CONFIG.suffix
+            clear_all_button_id: 'clear_all_button_' + this.CONFIG.suffix,
+            search_id: 'search_' + this.CONFIG.suffix
         };
         var html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
@@ -94,13 +87,32 @@ define(['jquery',
 
                 $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree({
 
-                    'plugins': ['unique', 'search', 'state', 'types', 'wholerow'],
+                    'plugins': ['unique', 'search', 'types', 'wholerow'],
 
                     'core': {
+                        'data': payload,
+                        'themes': {
+                            'stripes': true,
+                            'icons': false
+                        }
+                    },
 
-                        'data': payload
+                    'search': {
+                        'show_only_matches': true,
+                        'close_opened_onclear': false
                     }
 
+                });
+
+                var to = false;
+                $('#search_' + _this.CONFIG.suffix).keyup(function() {
+                    if (to) {
+                        clearTimeout(to);
+                    }
+                    to = setTimeout(function() {
+                        var v = $('#search_' + _this.CONFIG.suffix).val();
+                        $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree(true).search(v);
+                    }, 250);
                 });
 
             }
