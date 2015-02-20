@@ -116,7 +116,8 @@ define(['jquery',
                 var payload = [];
                 for (var i = 0 ; i < json.length ; i++)
                     payload.push({
-                        id: json[i][0],
+                        id: json[i][0] + '_' + json[i][3],
+                        code: json[i][0],
                         text: json[i][1],
                         type: json[i][3]
                     });
