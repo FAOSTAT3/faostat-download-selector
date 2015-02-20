@@ -3,6 +3,7 @@ define(['jquery',
         'text!faostat_download_selector/html/templates.html',
         'i18n!faostat_download_selector/nls/translate',
         'bootstrap',
+        'jstree',
         'sweet-alert'], function ($, Handlebars, templates, translate) {
 
     'use strict';
@@ -10,8 +11,9 @@ define(['jquery',
     function SELECTOR() {
 
         this.CONFIG = {
-            lang            :   'E',
-            placeholder_id  :   'placeholder',
+            lang: 'E',
+            placeholder_id: 'placeholder',
+            suffix: 'area',
             tabs :   [
                 {
                     label: 'Countries',
@@ -42,54 +44,91 @@ define(['jquery',
         var source = $(templates).filter('#main_structure').html();
         var template = Handlebars.compile(source);
         var dynamic_data = {
-            tab_headers_id: 'tab_headers_1',
-            tab_contents_id: 'tab_contents_1',
+            tab_headers_id: 'tab_headers_' + this.CONFIG.suffix,
+            tab_contents_id: 'tab_contents_' + this.CONFIG.suffix,
             go_to_label: translate.go_to,
             clear_all_label: translate.clear_all,
             select_all_label: translate.select_all,
-            select_all_button_id: 'select_all_button_1',
-            clear_all_button_id: 'select_all_button_2'
+            select_all_button_id: 'select_all_button_' + this.CONFIG.suffix,
+            clear_all_button_id: 'clear_all_button_' + this.CONFIG.suffix
         };
         var html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
 
         /* Add tab header and content. */
-        this.add_tab_header();
-        this.add_tab_content();
-
-        /* Add tab header and content. */
-        this.add_tab_header();
-        this.add_tab_content();
-
-        /* Add tab header and content. */
-        this.add_tab_header();
-        this.add_tab_content();
+        for (var i = 0 ; i < this.CONFIG.tabs.length ; i++) {
+            this.add_tab_header(this.CONFIG.tabs[i].label);
+            this.add_tab_content();
+        }
 
         /* Show the first tab. */
-        //$('#tab_headers_1').find('a').tab('show');
-        $($('#tab_headers_1').find('a')[0]).tab('show');
+        $($('#tab_headers_' + this.CONFIG.suffix).find('a')[0]).tab('show');
 
     };
 
-    SELECTOR.prototype.add_tab_header = function() {
+    SELECTOR.prototype.load_codelist = function() {
+
+        $('#tree').jstree({
+
+            'plugins': ['unique', 'search', 'state', 'types', 'wholerow'],
+
+            'core': {
+
+                'data': function(object, callback) {
+
+                    $.ajax({
+
+                        type: 'GET',
+                        url: 'http://faostat3.fao.org/wds/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E',
+
+                        success: function (response) {
+
+                            /* Cast the response to JSON, if needed. */
+                            var json = response;
+                            if (typeof json == 'string')
+                                json = $.parseJSON(response);
+
+                            /* Cast array to objects */
+                            var payload = [];
+                            for (var i = 0 ; i < json.length ; i++)
+                                payload.push({
+                                    id: json[i][0],
+                                    text: json[i][1],
+                                    type: json[i][3]
+                                });
+
+                            callback.call(this, payload);
+
+                        }
+
+                    });
+
+                }
+            }
+
+        });
+
+    };
+
+    SELECTOR.prototype.add_tab_header = function(tab_header_label) {
         var source = $(templates).filter('#tab_header_structure').html();
         var template = Handlebars.compile(source);
         var dynamic_data = {
-            role_id: 'role_1',
-            tab_header_label: 'Tab Header'
+            role_id: 'role_' + this.CONFIG.suffix,
+            tab_header_label: tab_header_label
         };
         var html = template(dynamic_data);
-        $('#tab_headers_1').append(html);
+        $('#tab_headers_' + this.CONFIG.suffix).append(html);
     };
 
     SELECTOR.prototype.add_tab_content = function() {
         var source = $(templates).filter('#tab_content_structure').html();
         var template = Handlebars.compile(source);
         var dynamic_data = {
-            id: 'role_1'
+            id: 'role_' + this.CONFIG.suffix
         };
         var html = template(dynamic_data);
-        $('#tab_contents_1').append(html);
+        $('#tab_contents_' + this.CONFIG.suffix).append(html);
     };
 
     return SELECTOR;

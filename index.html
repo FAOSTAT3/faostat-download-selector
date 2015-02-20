@@ -9,6 +9,7 @@
         <link href='http://fenixapps.fao.org/repository/js/chosen/1.0.0/chosen.min.css' rel='stylesheet'>
         <link href='css/bootstrap.min.css' rel='stylesheet'>
         <link href='css/sweet-alert.css' rel='stylesheet'>
+        <link href='css/jstree.css' rel='stylesheet'>
         <link href='css/faostat-download-selector.css' rel='stylesheet'>
         <script data-main='js/main' src='js/libs/require.js'></script>
     </head>
@@ -16,62 +17,12 @@
     <body>
         <div id='placeholder' style='width: 350px; margin: 35px 55px 0 27px;'></div>
 
-        <!--<div style='width: 350px; margin: 35px 55px 0 27px;'>-->
-
-            <!--<div role="tabpanel">-->
-
-                <!--&lt;!&ndash; Nav tabs &ndash;&gt;-->
-                <!--<ul class="nav nav-tabs" role="tablist">-->
-                    <!--<li role="presentation" class="active">-->
-                        <!--<a href="#home" aria-controls="home" role="tab" data-toggle="tab">-->
-                            <!--Country-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li role="presentation">-->
-                        <!--<a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">-->
-                            <!--Region-->
-                        <!--</a>-->
-                    <!--</li>-->
-                    <!--<li role="presentation">-->
-                        <!--<a href="#profile2" aria-controls="profile2" role="tab" data-toggle="tab">-->
-                            <!--Special Groups-->
-                        <!--</a>-->
-                    <!--</li>-->
-                <!--</ul>-->
-
-                <!--&lt;!&ndash; Tab panes &ndash;&gt;-->
-                <!--<div class="tab-content">-->
-                    <!--<div role="tabpanel" class="tab-pane active" id="home" style="padding: 5px 0 5px 0;">-->
-                        <!--<select style="width: 100%; height: 75px;" multiple class="form-control">-->
-                            <!--<option>Brazil</option>-->
-                            <!--<option>Portugal</option>-->
-                            <!--<option>Mozambique</option>-->
-                            <!--<option>Goa</option>-->
-                            <!--<option>Timor East</option>-->
-                            <!--<option>Formosa</option>-->
-                        <!--</select>-->
-                    <!--</div>-->
-                    <!--<div role="tabpanel" class="tab-pane" id="profile" style="padding: 5px 0 5px 0;">-->
-                        <!--Regions here-->
-                    <!--</div>-->
-                    <!--<div role="tabpanel" class="tab-pane" id="profile2" style="padding: 5px 0 5px 0;">-->
-                        <!--Groups here-->
-                    <!--</div>-->
-                <!--</div>-->
-
-            <!--</div>-->
-
-            <!--<div>-->
-                <!--<input class="form-control" placeholder="Go to..." style="width: 47%; margin-bottom: 5px; float: left; height: 31px !important;">-->
-                <!--<button class="btn btn-default btn-sm" type="submit" style="width: 25%; float: right;">-->
-                    <!--<i class="fa fa-times"></i> Clear All-->
-                <!--</button>-->
-                <!--<button class="btn btn-default btn-sm" type="submit" style="width: 25%; float: right; margin-right: 5px;">-->
-                    <!--<i class="fa fa-check-square-o"></i> Select All-->
-                <!--</button>-->
-            <!--</div>-->
-
-        <!--</div>-->
+        <div id='tree' style='margin: 50px 0 0 100px;
+                              width: 350px;
+                              height: 85px;
+                              border: 1px solid #000;
+                              overflow-y: auto'>
+        </div>
 
     </body>
 
