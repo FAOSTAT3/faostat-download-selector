@@ -55,10 +55,11 @@ define(['jquery',
         var html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
 
-        /* Add tab header and content. */
-        for (var i = 0 ; i < this.CONFIG.tabs.length ; i++) {
-            this.add_tab_header(this.CONFIG.tabs[i].label);
-            this.add_tab_content();
+        /* Add tab headers and contents. */
+        for (var tab_idx = 0 ; tab_idx < this.CONFIG.tabs.length ; tab_idx++) {
+            this.add_tab_header(tab_idx, this.CONFIG.tabs[tab_idx].label);
+            this.add_tab_content(tab_idx);
+            this.load_codelist(tab_idx, this.CONFIG.tabs[tab_idx].rest)
         }
 
         /* Show the first tab. */
@@ -66,66 +67,65 @@ define(['jquery',
 
     };
 
-    SELECTOR.prototype.load_codelist = function() {
+    SELECTOR.prototype.load_codelist = function(tab_idx, rest) {
 
-        $('#tree').jstree({
+        var _this = this;
 
-            'plugins': ['unique', 'search', 'state', 'types', 'wholerow'],
+        $.ajax({
 
-            'core': {
+            type: 'GET',
+            url: rest,
 
-                'data': function(object, callback) {
+            success: function (response) {
 
-                    $.ajax({
+                /* Cast the response to JSON, if needed. */
+                var json = response;
+                if (typeof json == 'string')
+                    json = $.parseJSON(response);
 
-                        type: 'GET',
-                        url: 'http://faostat3.fao.org/wds/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E',
-
-                        success: function (response) {
-
-                            /* Cast the response to JSON, if needed. */
-                            var json = response;
-                            if (typeof json == 'string')
-                                json = $.parseJSON(response);
-
-                            /* Cast array to objects */
-                            var payload = [];
-                            for (var i = 0 ; i < json.length ; i++)
-                                payload.push({
-                                    id: json[i][0],
-                                    text: json[i][1],
-                                    type: json[i][3]
-                                });
-
-                            callback.call(this, payload);
-
-                        }
-
+                /* Cast array to objects */
+                var payload = [];
+                for (var i = 0 ; i < json.length ; i++)
+                    payload.push({
+                        id: json[i][0],
+                        text: json[i][1],
+                        type: json[i][3]
                     });
 
-                }
+                $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree({
+
+                    'plugins': ['unique', 'search', 'state', 'types', 'wholerow'],
+
+                    'core': {
+
+                        'data': payload
+                    }
+
+                });
+
             }
 
         });
 
     };
 
-    SELECTOR.prototype.add_tab_header = function(tab_header_label) {
+    SELECTOR.prototype.add_tab_header = function(tab_idx, tab_header_label) {
         var source = $(templates).filter('#tab_header_structure').html();
         var template = Handlebars.compile(source);
         var dynamic_data = {
-            role_id: 'role_' + this.CONFIG.suffix,
+            role_id: 'role_' + this.CONFIG.suffix + '_' + tab_idx,
             tab_header_label: tab_header_label
         };
         var html = template(dynamic_data);
         $('#tab_headers_' + this.CONFIG.suffix).append(html);
     };
 
-    SELECTOR.prototype.add_tab_content = function() {
+    SELECTOR.prototype.add_tab_content = function(tab_idx) {
         var source = $(templates).filter('#tab_content_structure').html();
         var template = Handlebars.compile(source);
         var dynamic_data = {
-            id: 'role_' + this.CONFIG.suffix
+            id: 'role_' + this.CONFIG.suffix + '_' + tab_idx,
+            content_id: 'content_' + this.CONFIG.suffix + '_' + tab_idx
         };
         var html = template(dynamic_data);
         $('#tab_contents_' + this.CONFIG.suffix).append(html);
