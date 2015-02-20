@@ -32,6 +32,9 @@ define(['jquery',
         /* Fix the language, if needed. */
         this.CONFIG.lang = this.CONFIG.lang != null ? this.CONFIG.lang : 'E';
 
+        /* this... */
+        var _this = this;
+
         /* Load main structure. */
         var source = $(templates).filter('#main_structure').html();
         var template = Handlebars.compile(source);
@@ -53,11 +56,44 @@ define(['jquery',
             this.add_tab_header(tab_idx, this.CONFIG.tabs[tab_idx].label);
             this.add_tab_content(tab_idx);
             this.load_codelist(tab_idx, this.CONFIG.tabs[tab_idx].rest)
+            this.bind_search(tab_idx);
         }
+
+        /* Bind select all functions. */
+        $('#select_all_button_' + this.CONFIG.suffix).click(function() {
+            _this.select_all();
+        });
+
+        /* Bind clear all functions. */
+        $('#clear_all_button_' + this.CONFIG.suffix).click(function() {
+            _this.clear_all();
+        });
 
         /* Show the first tab. */
         $($('#tab_headers_' + this.CONFIG.suffix).find('a')[0]).tab('show');
 
+    };
+
+    SELECTOR.prototype.add_tab_header = function(tab_idx, tab_header_label) {
+        var source = $(templates).filter('#tab_header_structure').html();
+        var template = Handlebars.compile(source);
+        var dynamic_data = {
+            role_id: 'role_' + this.CONFIG.suffix + '_' + tab_idx,
+            tab_header_label: tab_header_label
+        };
+        var html = template(dynamic_data);
+        $('#tab_headers_' + this.CONFIG.suffix).append(html);
+    };
+
+    SELECTOR.prototype.add_tab_content = function(tab_idx) {
+        var source = $(templates).filter('#tab_content_structure').html();
+        var template = Handlebars.compile(source);
+        var dynamic_data = {
+            id: 'role_' + this.CONFIG.suffix + '_' + tab_idx,
+            content_id: 'content_' + this.CONFIG.suffix + '_' + tab_idx
+        };
+        var html = template(dynamic_data);
+        $('#tab_contents_' + this.CONFIG.suffix).append(html);
     };
 
     SELECTOR.prototype.load_codelist = function(tab_idx, rest) {
@@ -85,6 +121,7 @@ define(['jquery',
                         type: json[i][3]
                     });
 
+                /* Init JSTree. */
                 $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree({
 
                     'plugins': ['unique', 'search', 'types', 'wholerow'],
@@ -104,43 +141,38 @@ define(['jquery',
 
                 });
 
-                var to = false;
-                $('#search_' + _this.CONFIG.suffix).keyup(function() {
-                    if (to) {
-                        clearTimeout(to);
-                    }
-                    to = setTimeout(function() {
-                        var v = $('#search_' + _this.CONFIG.suffix).val();
-                        $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree(true).search(v);
-                    }, 250);
-                });
-
             }
 
         });
 
     };
 
-    SELECTOR.prototype.add_tab_header = function(tab_idx, tab_header_label) {
-        var source = $(templates).filter('#tab_header_structure').html();
-        var template = Handlebars.compile(source);
-        var dynamic_data = {
-            role_id: 'role_' + this.CONFIG.suffix + '_' + tab_idx,
-            tab_header_label: tab_header_label
-        };
-        var html = template(dynamic_data);
-        $('#tab_headers_' + this.CONFIG.suffix).append(html);
+    SELECTOR.prototype.bind_search = function(tab_idx) {
+        var to = false;
+        var _this = this;
+        $('#search_' + this.CONFIG.suffix).keyup(function() {
+            if (to)
+                clearTimeout(to);
+            to = setTimeout(function() {
+                var v = $('#search_' + _this.CONFIG.suffix).val();
+                $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree(true).search(v);
+            }, 250);
+        });
     };
 
-    SELECTOR.prototype.add_tab_content = function(tab_idx) {
-        var source = $(templates).filter('#tab_content_structure').html();
-        var template = Handlebars.compile(source);
-        var dynamic_data = {
-            id: 'role_' + this.CONFIG.suffix + '_' + tab_idx,
-            content_id: 'content_' + this.CONFIG.suffix + '_' + tab_idx
-        };
-        var html = template(dynamic_data);
-        $('#tab_contents_' + this.CONFIG.suffix).append(html);
+    SELECTOR.prototype.active_tab_idx = function() {
+        var tab_idx = $('ul#tab_headers_' + this.CONFIG.suffix + ' li.active').attr('role');
+        return tab_idx.charAt(tab_idx.length - 1);
+    };
+
+    SELECTOR.prototype.select_all = function() {
+        var tab_idx = this.active_tab_idx();
+        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').addClass('jstree-wholerow-clicked')
+    };
+
+    SELECTOR.prototype.clear_all = function() {
+        var tab_idx = this.active_tab_idx();
+        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').removeClass('jstree-wholerow-clicked')
     };
 
     return SELECTOR;
