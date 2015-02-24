@@ -70,6 +70,7 @@ define(['jquery',
         });
 
         /* Show the first tab. */
+        console.log('#tab_headers_' + this.CONFIG.suffix);
         $($('#tab_headers_' + this.CONFIG.suffix).find('a')[0]).tab('show');
 
     };
