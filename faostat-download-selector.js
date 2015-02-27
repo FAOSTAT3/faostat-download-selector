@@ -119,9 +119,12 @@ define(['jquery',
                 for (var i = 0 ; i < json.length ; i++)
                     payload.push({
                         id: json[i][0] + '_' + json[i][3],
-                        code: json[i][0],
                         text: json[i][1],
-                        type: json[i][3]
+                        li_attr: {
+                            code: json[i][0],
+                            type: json[i][3],
+                            label: json[i][1]
+                        }
                     });
 
                 /* Init JSTree. */
@@ -144,9 +147,39 @@ define(['jquery',
 
                 });
 
+                /* Bind select function. */
+                $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).on('changed.jstree', function (e, data) {
+                    _this.summary_listener(data);
+                })
+
             }
 
         });
+
+    };
+
+    SELECTOR.prototype.summary_listener = function(data) {
+
+        /* Initiate variables. */
+        var s = '';
+        var source = $(templates).filter('#summary_item').html();
+        var template = Handlebars.compile(source);
+        var dynamic_data = {};
+
+        /* Iterate over selected items. */
+        for(var i = 0; i < data.selected.length; i++) {
+            dynamic_data = {
+                summary_item_type: data.instance.get_node(data.selected[i]).li_attr['type'],
+                summary_item_id: data.instance.get_node(data.selected[i]).li_attr['id'],
+                summary_item_code: data.instance.get_node(data.selected[i]).li_attr['code'],
+                summary_item_label: data.instance.get_node(data.selected[i]).li_attr['label']
+            };
+            s += template(dynamic_data);
+        }
+
+        /* Show selected items in the summary. */
+        $('#summary_' + this.CONFIG.suffix).empty();
+        $('#summary_' + this.CONFIG.suffix).html(s);
 
     };
 
