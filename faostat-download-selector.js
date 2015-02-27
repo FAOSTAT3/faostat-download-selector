@@ -46,7 +46,9 @@ define(['jquery',
             select_all_label: translate.select_all,
             select_all_button_id: 'select_all_button_' + this.CONFIG.suffix,
             clear_all_button_id: 'clear_all_button_' + this.CONFIG.suffix,
-            search_id: 'search_' + this.CONFIG.suffix
+            search_id: 'search_' + this.CONFIG.suffix,
+            summary_id: 'summary_' + this.CONFIG.suffix,
+            summary_label: translate.summary
         };
         var html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
