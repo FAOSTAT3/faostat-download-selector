@@ -130,7 +130,7 @@ define(['jquery',
                     'core': {
                         'data': payload,
                         'themes': {
-                            'stripes': true,
+                            'stripes': false,
                             'icons': false
                         }
                     },
