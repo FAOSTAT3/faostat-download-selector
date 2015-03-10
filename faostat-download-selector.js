@@ -211,12 +211,25 @@ define(['jquery',
 
     SELECTOR.prototype.select_all = function() {
         var tab_idx = this.active_tab_idx();
-        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').addClass('jstree-wholerow-clicked')
+        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').addClass('jstree-wholerow-clicked');
+        $('#summary_' + this.CONFIG.suffix).empty();
+
+        var source = $(templates).filter('#summary_item').html();
+        var template = Handlebars.compile(source);
+        var dynamic_data = {
+            summary_item_type: 'type',
+            summary_item_id: 'id',
+            summary_item_code: 'code',
+            summary_item_label: 'All Countries'
+        };
+        $('#summary_' + this.CONFIG.suffix).html(template(dynamic_data));
+
     };
 
     SELECTOR.prototype.clear_all = function() {
         var tab_idx = this.active_tab_idx();
-        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').removeClass('jstree-wholerow-clicked')
+        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').removeClass('jstree-wholerow-clicked');
+        $('#summary_' + this.CONFIG.suffix).empty();
     };
 
     return SELECTOR;
