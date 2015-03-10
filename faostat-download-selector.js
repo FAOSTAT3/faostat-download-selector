@@ -128,7 +128,8 @@ define(['jquery',
                     });
 
                 /* Init JSTree. */
-                $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree({
+                var tree = $('#content_' + _this.CONFIG.suffix + '_' + tab_idx);
+                tree.jstree({
 
                     'plugins': ['unique', 'search', 'types', 'wholerow'],
 
@@ -148,7 +149,7 @@ define(['jquery',
                 });
 
                 /* Bind select function. */
-                $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).on('changed.jstree', function (e, data) {
+                tree.on('changed.jstree', function (e, data) {
                     _this.summary_listener(data);
                 })
 
