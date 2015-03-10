@@ -170,7 +170,7 @@ define(['jquery',
         for(var i = 0; i < data.selected.length; i++) {
             dynamic_data = {
                 summary_item_type: data.instance.get_node(data.selected[i]).li_attr['type'],
-                summary_item_id: data.instance.get_node(data.selected[i]).li_attr['id'],
+                summary_item_id: data.instance.get_node(data.selected[i]).li_attr['id'] + this.CONFIG.suffix,
                 summary_item_code: data.instance.get_node(data.selected[i]).li_attr['code'],
                 summary_item_label: data.instance.get_node(data.selected[i]).li_attr['label']
             };
@@ -180,6 +180,14 @@ define(['jquery',
         /* Show selected items in the summary. */
         $('#summary_' + this.CONFIG.suffix).empty();
         $('#summary_' + this.CONFIG.suffix).html(s);
+
+        /* Delete selected item on click. */
+        for(i = 0; i < data.selected.length; i++) {
+            var id = '#' + data.instance.get_node(data.selected[i]).li_attr['id'] + this.CONFIG.suffix;
+            $(id).click(function() {
+                this.remove();
+            });
+        }
 
     };
 
