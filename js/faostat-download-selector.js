@@ -4,7 +4,7 @@ define(['jquery',
         'i18n!faostat_download_selector/nls/translate',
         'bootstrap',
         'jstree',
-        'sweet-alert'], function ($, Handlebars, templates, translate) {
+        'sweetAlert'], function ($, Handlebars, templates, translate) {
 
     'use strict';
 
