@@ -153,6 +153,14 @@ define(['jquery',
                     _this.summary_listener(data);
                 })
 
+            },
+
+            error: function (a) {
+                swal({
+                    title: translate.error,
+                    type: 'error',
+                    text: a.responseText
+                });
             }
 
         });
