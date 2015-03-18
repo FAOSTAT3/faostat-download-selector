@@ -4,7 +4,7 @@ define(['jquery',
         'i18n!faostat_download_selector/nls/translate',
         'bootstrap',
         'jstree',
-        'sweet-alert'], function ($, Handlebars, templates, translate) {
+        'sweetAlert'], function ($, Handlebars, templates, translate) {
 
     'use strict';
 
@@ -128,7 +128,8 @@ define(['jquery',
                     });
 
                 /* Init JSTree. */
-                $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree({
+                var tree = $('#content_' + _this.CONFIG.suffix + '_' + tab_idx);
+                tree.jstree({
 
                     'plugins': ['unique', 'search', 'types', 'wholerow'],
 
@@ -148,10 +149,18 @@ define(['jquery',
                 });
 
                 /* Bind select function. */
-                $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).on('changed.jstree', function (e, data) {
+                tree.on('changed.jstree', function (e, data) {
                     _this.summary_listener(data);
                 })
 
+            },
+
+            error: function (a) {
+                swal({
+                    title: translate.error,
+                    type: 'error',
+                    text: a.responseText
+                });
             }
 
         });
@@ -170,7 +179,7 @@ define(['jquery',
         for(var i = 0; i < data.selected.length; i++) {
             dynamic_data = {
                 summary_item_type: data.instance.get_node(data.selected[i]).li_attr['type'],
-                summary_item_id: data.instance.get_node(data.selected[i]).li_attr['id'],
+                summary_item_id: data.instance.get_node(data.selected[i]).li_attr['id'] + this.CONFIG.suffix,
                 summary_item_code: data.instance.get_node(data.selected[i]).li_attr['code'],
                 summary_item_label: data.instance.get_node(data.selected[i]).li_attr['label']
             };
@@ -180,6 +189,14 @@ define(['jquery',
         /* Show selected items in the summary. */
         $('#summary_' + this.CONFIG.suffix).empty();
         $('#summary_' + this.CONFIG.suffix).html(s);
+
+        /* Delete selected item on click. */
+        for(i = 0; i < data.selected.length; i++) {
+            var id = '#' + data.instance.get_node(data.selected[i]).li_attr['id'] + this.CONFIG.suffix;
+            $(id).click(function() {
+                this.remove();
+            });
+        }
 
     };
 
@@ -203,12 +220,27 @@ define(['jquery',
 
     SELECTOR.prototype.select_all = function() {
         var tab_idx = this.active_tab_idx();
-        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').addClass('jstree-wholerow-clicked')
+        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').addClass('jstree-wholerow-clicked');
+    };
+
+    SELECTOR.prototype.create_select_all_object = function() {
+        var obj = $('#summary_' + this.CONFIG.suffix);
+        obj.empty();
+        var source = $(templates).filter('#summary_item').html();
+        var template = Handlebars.compile(source);
+        var dynamic_data = {
+            summary_item_type: 'type',
+            summary_item_id: 'id',
+            summary_item_code: 'code',
+            summary_item_label: 'All Countries'
+        };
+        obj.html(template(dynamic_data));
     };
 
     SELECTOR.prototype.clear_all = function() {
         var tab_idx = this.active_tab_idx();
-        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').removeClass('jstree-wholerow-clicked')
+        $('#content_' + this.CONFIG.suffix + '_' + tab_idx + ' ul li div').removeClass('jstree-wholerow-clicked');
+        $('#summary_' + this.CONFIG.suffix).empty();
     };
 
     return SELECTOR;
