@@ -2,8 +2,8 @@ define(function() {
 
     var config = {
         paths: {
-            FAOSTAT_DOWNLOAD_SELECTOR: 'faostat-download-selector',
-            faostat_download_selector: '../'
+            FAOSTAT_UI_DOWNLOAD_SELECTOR: 'faostat-ui-download-selector',
+            faostat_ui_download_selector: '../'
         },
         shim: {
             bootstrap: {
