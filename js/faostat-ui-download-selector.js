@@ -243,6 +243,14 @@ define(['jquery',
         $('#summary_' + this.CONFIG.suffix).empty();
     };
 
+    SELECTOR.prototype.get_user_selection = function() {
+        var out = [];
+        var divs = $('#summary_' + this.CONFIG.suffix + ' div');
+        for (var i = 0 ; i < divs.length ; i++)
+            out.push("'" + $(divs[i]).data('code') + "'");
+        return out;
+    };
+
     return SELECTOR;
 
 });
