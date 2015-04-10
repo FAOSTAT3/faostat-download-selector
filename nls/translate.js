@@ -5,6 +5,6 @@ define({
         clear_all: 'Clear All',
         summary: 'Summary'
     },
-    F : true,
-    S : true
+    fr : true,
+    es : true
 });
