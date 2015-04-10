@@ -62,7 +62,7 @@ define(['jquery',
         for (var tab_idx = 0 ; tab_idx < this.CONFIG.tabs.length ; tab_idx++) {
             this.add_tab_header(tab_idx, this.CONFIG.tabs[tab_idx].label);
             this.add_tab_content(tab_idx);
-            this.load_codelist(tab_idx, this.CONFIG.tabs[tab_idx].rest)
+            this.load_codelist(tab_idx, this.CONFIG.tabs[tab_idx].rest);
             this.bind_search(tab_idx);
         }
 
