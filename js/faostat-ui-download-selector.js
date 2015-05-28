@@ -136,7 +136,7 @@ define(['jquery',
                 var tree = $('#content_' + _this.CONFIG.suffix + '_' + tab_idx);
                 tree.jstree({
 
-                    'plugins': ['unique', 'search', 'types', 'wholerow'],
+                    'plugins': ['checkbox', 'unique', 'search', 'types', 'wholerow'],
 
                     'core': {
                         'data': payload,
