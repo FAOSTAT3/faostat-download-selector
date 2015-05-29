@@ -1,6 +1,6 @@
 define({
     root : {
-        go_to: 'Go to...',
+        go_to: 'Filter...',
         select_all: 'Select All',
         clear_all: 'Clear All',
         summary: 'Summary'
