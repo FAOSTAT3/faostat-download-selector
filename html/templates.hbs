@@ -34,7 +34,13 @@
 </script>
 
 <script type='text/x-handlebars-template' id='summary_item'>
-    <div data-type='{{summary_item_type}}' id='{{summary_item_id}}' class='summary-item' data-code='{{summary_item_code}}'>
+    <div data-type='{{summary_item_type}}'
+         id='{{summary_item_id}}'
+         class='summary-item'
+         data-code='{{summary_item_code}}'
+         data-toggle='tooltip'
+         title='{{click_to_remove_label}}'
+         onclick='{{summary_item_click}}'>
         {{summary_item_label}}
     </div>
 </script>

@@ -1,7 +1,7 @@
 define(['jquery',
         'handlebars',
         'faostat_commons',
-        'text!faostat_ui_download_selector/html/templates.html',
+        'text!faostat_ui_download_selector/html/templates.hbs',
         'i18n!faostat_ui_download_selector/nls/translate',
         'bootstrap',
         'jstree',
@@ -183,17 +183,17 @@ define(['jquery',
         /* Iterate over selected items. */
         for(var i = 0; i < data.selected.length; i++) {
             dynamic_data = {
+                click_to_remove_label: translate.click_to_remove,
                 summary_item_type: data.instance.get_node(data.selected[i]).li_attr['type'],
-                summary_item_id: data.instance.get_node(data.selected[i]).li_attr['id'] + this.CONFIG.suffix,
                 summary_item_code: data.instance.get_node(data.selected[i]).li_attr['code'],
-                summary_item_label: data.instance.get_node(data.selected[i]).li_attr['label']
+                summary_item_label: data.instance.get_node(data.selected[i]).li_attr['label'],
+                summary_item_id: data.instance.get_node(data.selected[i]).li_attr['id'] + this.CONFIG.suffix
             };
             s += template(dynamic_data);
         }
 
         /* Show selected items in the summary. */
-        $('#summary_' + this.CONFIG.suffix).empty();
-        $('#summary_' + this.CONFIG.suffix).html(s);
+        $('#summary_' + this.CONFIG.suffix).empty().html(s);
 
         /* Delete selected item on click. */
         for(i = 0; i < data.selected.length; i++) {
@@ -203,6 +203,21 @@ define(['jquery',
             });
         }
 
+        /* Enable tooltips. */
+        $('[data-toggle="tooltip"]').tooltip();
+
+        /* Remove item on click. */
+        var _this = this;
+        $('.summary-item').click(function() {
+            var tab_idx = parseInt(this.id.substring(this.id.length - 1, this.id.length)) - 1;
+            var item_id = this.id.substring(0, this.id.length - 2);
+            $('#content_' + _this.CONFIG.suffix + '_' + tab_idx).jstree(true).deselect_node("[id='" + item_id + "']")
+        });
+
+    };
+
+    SELECTOR.prototype.test = function() {
+        alert('asd');
     };
 
     SELECTOR.prototype.bind_search = function(tab_idx) {
