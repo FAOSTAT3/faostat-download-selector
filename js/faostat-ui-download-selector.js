@@ -19,7 +19,7 @@ define(['jquery',
             tabs :   [
                 {
                     label: 'Test',
-                    rest: 'http://faostat3.fao.org/wds/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E'
+                    rest: 'http://fenixapps2.fao.org/wds_5.2.1/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E'
                 }
             ]
         };
