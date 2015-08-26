@@ -3,9 +3,9 @@ define(['jquery',
         'faostat_commons',
         'text!faostat_ui_download_selector/html/templates.hbs',
         'i18n!faostat_ui_download_selector/nls/translate',
+        'sweetAlert',
         'bootstrap',
-        'jstree',
-        'sweetAlert'], function ($, Handlebars, FAOSTATCommons, templates, translate) {
+        'jstree'], function ($, Handlebars, FAOSTATCommons, templates, translate, sweetAlert) {
 
     'use strict';
 
@@ -19,7 +19,7 @@ define(['jquery',
             tabs :   [
                 {
                     label: 'Test',
-                    rest: 'http://fenixapps2.fao.org/wds_5.2.1/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E'
+                    rest: 'http://fenixapps2.fao.org/wds_5.1/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E'
                 }
             ]
         };
@@ -161,7 +161,7 @@ define(['jquery',
             },
 
             error: function (a) {
-                swal({
+                sweetAlert({
                     title: translate.error,
                     type: 'error',
                     text: a.responseText
