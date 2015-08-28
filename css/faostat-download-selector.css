@@ -82,3 +82,42 @@
 
 .modal-dialog {
   z-index: 1051; }
+
+.faostat-downlaod-selector-single {
+  margin-bottom: 15px;
+  position: relative;
+  height: 245px;
+  overflow: hidden; }
+  .faostat-downlaod-selector-single .btn {
+    width: 100%; }
+  .faostat-downlaod-selector-single .jstree-ocl {
+    width: 5px; }
+  .faostat-downlaod-selector-single:before {
+    content: '';
+    display: block;
+    position: absolute;
+    height: 205px;
+    top: 38px;
+    width: calc(100% - 30px);
+    border: 1px solid #dddddd;
+    -webkit-border-radius: 0 0 4px 4px;
+    -moz-border-radius: 0 0 4px 4px;
+    -ms-border-radius: 0 0 4px 4px;
+    border-radius: 0 0 4px 4px; }
+  .faostat-downlaod-selector-single:after {
+    content: 'Summary is empty';
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    font-weight: 400;
+    color: #999999;
+    -ms-transform: translateX(-50%);
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%); }
+  .faostat-downlaod-selector-single .tab-content {
+    padding-top: 0; }
+    .faostat-downlaod-selector-single .tab-content > .tab-pane {
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      margin-bottom: 5px;
+      border-bottom: 1px solid #dddddd; }

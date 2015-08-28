@@ -179,3 +179,78 @@ $light-brown: #f3efe0;
 .modal-dialog{
   z-index: 1051; //Not Good
 }
+
+@mixin fx-transfor-me($value){
+  -ms-transform: $value; // IE 9
+  -webkit-transform: $value; // Chrome, Safari, Opera
+  transform: $value;
+}
+
+@mixin fx-border-radius($radius) {
+  -webkit-border-radius: $radius;
+  -moz-border-radius: $radius;
+  -ms-border-radius: $radius;
+  border-radius: $radius;
+}
+
+.faostat-downlaod-selector-single{
+  margin-bottom: 15px;
+  position: relative;
+  height: 245px;
+  overflow: hidden;
+
+  .btn{
+    width: 100%;
+  }
+
+
+
+  .jstree-ocl{
+    width: 5px;
+  }
+
+
+
+  &:before{
+    content: '';
+    display: block;
+    position: absolute;
+    height: 205px;
+    top: 38px;
+    width: calc(100% - 30px);
+    border: 1px solid $fenix-light-gray;
+    @include fx-border-radius(0 0 4px 4px);
+  }
+
+  &:after{
+    content: 'Summary is empty';
+    position: absolute;
+    bottom: 35px;
+    left: 50%;
+    font-weight: 400;
+    color: $fenix-secondary-text;
+    @include fx-transfor-me(translateX(-50%));
+  }
+
+  .nav.nav-tabs{
+
+
+
+
+
+  }
+
+  .tab-content{
+    padding-top: 0;
+
+    >.tab-pane{
+      padding-top: 0 !important;
+      padding-bottom: 0 !important;
+      margin-bottom: 5px;
+      border-bottom: 1px solid $fenix-light-gray;
+
+    }
+  }
+
+
+}
