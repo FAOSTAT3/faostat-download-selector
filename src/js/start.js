@@ -16,6 +16,7 @@ define(['jquery',
             lang_faostat: 'E',
             placeholder_id: 'placeholder',
             suffix: 'area',
+            rendered: false,
             tabs :   [
                 {
                     label: 'Test',
@@ -66,6 +67,9 @@ define(['jquery',
             this.bind_search(tab_idx);
         }
 
+        /* Rendered. */
+        this.CONFIG.rendered = true;
+
         /* Bind select all functions. */
         $('#select_all_button_' + this.CONFIG.suffix).click(function() {
             _this.select_all();
@@ -79,6 +83,14 @@ define(['jquery',
         /* Show the first tab. */
         $($('#tab_headers_' + this.CONFIG.suffix).find('a')[0]).tab('show');
 
+    };
+
+    SELECTOR.prototype.isRendered = function () {
+        return this.CONFIG.rendered;
+    };
+
+    SELECTOR.prototype.isNotRendered = function () {
+        return !this.CONFIG.rendered;
     };
 
     SELECTOR.prototype.add_tab_header = function(tab_idx, tab_header_label) {
