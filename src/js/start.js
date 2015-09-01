@@ -23,7 +23,11 @@ define(['jquery',
                     label: 'Test',
                     rest: 'http://fenixapps2.fao.org/wds_5.1/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E'
                 }
-            ]
+            ],
+            /* Events to destroy. */
+            callback: {
+                onSelectionChange: null
+            }
         };
 
     }
@@ -176,7 +180,9 @@ define(['jquery',
                 /* Bind select function. */
                 tree.on('changed.jstree', function (e, data) {
                     that.summary_listener(data);
-                    $('#downloadOutputArea').empty();
+                    if (that.CONFIG.callback.onSelectionChange) {
+                        that.CONFIG.callback.onSelectionChange();
+                    }
                 });
 
             },
@@ -234,6 +240,11 @@ define(['jquery',
             item_id = this.id.substring(0, this.id.length - 2);
             $('#' + tree_id).jstree(true).deselect_node("[id='" + item_id + "']");
         });
+
+        /* Add user' onSelectionChange callback. */
+        if (this.CONFIG.callback.onSelectionChange) {
+            this.CONFIG.callback.onSelectionChange();
+        }
 
     };
 
