@@ -24,6 +24,7 @@ define(['jquery',
                     rest: 'http://fenixapps2.fao.org/wds_5.1/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E'
                 }
             ],
+            selector_buffer: [],
             /* Events to destroy. */
             callback: {
                 onSelectionChange: null
@@ -201,13 +202,26 @@ define(['jquery',
 
     SELECTOR.prototype.summary_listener = function (data) {
 
+        /* Initiate selector's buffer. */
+        if (this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] === undefined) {
+            this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] = [];
+        }
+
         /* Initiate variables. */
         var s = '', source, template, dynamic_data, i, id;
         source = $(templates).filter('#summary_item').html();
         template = Handlebars.compile(source);
         dynamic_data = {};
 
+        /* Add selected items to the buffer. */
+        for (i = 0; i < data.selected.length; i += 1) {
+            if ($.inArray(data.selected[i], this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix]) < 0) {
+                this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix].push(data.selected[i]);
+            }
+        }
+
         /* Iterate over selected items. */
+        /* TODO: iterate over buffer, data.instance.get_node??? */
         for (i = 0; i < data.selected.length; i += 1) {
             dynamic_data = {
                 click_to_remove_label: translate.click_to_remove,
