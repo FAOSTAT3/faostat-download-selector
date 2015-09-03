@@ -1,4 +1,4 @@
-/*global define*/
+/*global define, _*/
 define(['jquery',
         'handlebars',
         'faostat_commons',
@@ -152,7 +152,8 @@ define(['jquery',
                         li_attr: {
                             code: json[i][0],
                             type: json[i][3],
-                            label: json[i][1]
+                            label: json[i][1],
+                            tab_idx: tab_idx
                         }
                     });
                 }
@@ -180,7 +181,10 @@ define(['jquery',
 
                 /* Bind select function. */
                 tree.on('changed.jstree', function (e, data) {
-                    that.summary_listener(data);
+                    var box_id, tab_id;
+                    tab_id = this.id.charAt(this.id.length - 1);
+                    box_id = this.id.charAt(9);
+                    that.summary_listener(data, box_id, tab_id);
                     if (that.CONFIG.callback.onSelectionChange) {
                         that.CONFIG.callback.onSelectionChange();
                     }
@@ -200,9 +204,22 @@ define(['jquery',
 
     };
 
-    SELECTOR.prototype.summary_listener = function (data) {
+    /*
+        Use Underscore to determine wheter the array of objects contains an object with the ID equals to
+        the one of the selected JSTree's node.
+     */
+    SELECTOR.prototype.no_object_with_the_same_key = function (selected_node) {
+        return _.find(this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix], function (item) {
+            return item.id === selected_node;
+        }) === undefined;
+    };
 
-        /* Initiate selector's buffer. */
+    SELECTOR.prototype.summary_listener = function (data, box_id, tab_id) {
+
+        /*
+            Initiate selector's buffer. This buffer contains all the selected JSTree nodes selected by the user for
+            a given box, e.g. Areas. This is used to enable cross-tabs selection.
+        */
         if (this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] === undefined) {
             this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] = [];
         }
@@ -215,20 +232,22 @@ define(['jquery',
 
         /* Add selected items to the buffer. */
         for (i = 0; i < data.selected.length; i += 1) {
-            if ($.inArray(data.selected[i], this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix]) < 0) {
-                this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix].push(data.selected[i]);
+            if (this.no_object_with_the_same_key(data.selected[i])) {
+                this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix].push(data.instance.get_node(data.selected[i]));
             }
         }
 
         /* Iterate over selected items. */
         /* TODO: iterate over buffer, data.instance.get_node??? */
-        for (i = 0; i < data.selected.length; i += 1) {
+        for (i = 0; i < this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix].length; i += 1) {
             dynamic_data = {
                 click_to_remove_label: translate.click_to_remove,
-                summary_item_type: data.instance.get_node(data.selected[i]).li_attr.type,
-                summary_item_code: data.instance.get_node(data.selected[i]).li_attr.code,
-                summary_item_label: data.instance.get_node(data.selected[i]).li_attr.label,
-                summary_item_id: data.instance.get_node(data.selected[i]).li_attr.id + this.CONFIG.suffix
+                summary_item_type: this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix][i].li_attr.type,
+                summary_item_code: this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix][i].li_attr.code,
+                summary_item_label: this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix][i].li_attr.label,
+                summary_item_id: this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix][i].li_attr.id + this.CONFIG.suffix,
+                box_id: box_id,
+                tab_id: this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix][i].li_attr.tab_idx
             };
             s += template(dynamic_data);
         }
@@ -236,23 +255,20 @@ define(['jquery',
         /* Show selected items in the summary. */
         $('#summary_' + this.CONFIG.suffix).empty().html(s);
 
-        /* Delete selected item on click. */
-        for (i = 0; i < data.selected.length; i += 1) {
-            id = '#' + data.instance.get_node(data.selected[i]).li_attr.id + this.CONFIG.suffix;
-            $(id).click(function () {
-                this.remove();
-            });
-        }
-
         /* Remove item on click. */
         $('.summary-item').click(function () {
-            var row_id, box_id, tab_id, tree_id, item_id;
-            row_id = this.id.substring(1 + this.id.indexOf('_'), this.id.length);
-            box_id = row_id.substring(1 + row_id.indexOf('_'));
-            tab_id = row_id.charAt(0);
-            tree_id = 'content__' + box_id + '_' + tab_id;
+
+            /* Un-select JSTree node. */
+            var local_box_id, local_tab_id, tree_id, item_id;
+            local_box_id = $(this).data('box');
+            local_tab_id = $(this).data('tab');
+            tree_id = 'content__' + local_box_id + '_' + local_tab_id;
             item_id = this.id.substring(0, this.id.length - 2);
             $('#' + tree_id).jstree(true).deselect_node("[id='" + item_id + "']");
+
+            /* Remove item from the summary. */
+            $('#' + this.id).remove();
+
         });
 
         /* Add user' onSelectionChange callback. */
