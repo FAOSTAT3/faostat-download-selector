@@ -337,10 +337,14 @@ define(['jquery',
     };
 
     SELECTOR.prototype.get_user_selection = function () {
-        var out = [], divs, i;
+        var out = [], divs, i, code;
         divs = $('#summary_' + this.CONFIG.suffix + ' div');
         for (i = 0; i < divs.length; i += 1) {
-            out.push("'" + $(divs[i]).data('code') + "'");
+            code = $(divs[i]).data('code');
+            if (divs[i].id.indexOf('>') > -1) {
+                code += '>';
+            }
+            out.push("'" + code + "'");
         }
         return out;
     };
