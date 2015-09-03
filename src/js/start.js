@@ -214,7 +214,13 @@ define(['jquery',
         }) === undefined;
     };
 
-    SELECTOR.prototype.summary_listener = function (data, box_id, tab_id) {
+    SELECTOR.prototype.find_selected_item = function (item_code) {
+        return _.find(this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix], function (item) {
+            return item.id === item_code;
+        });
+    };
+
+    SELECTOR.prototype.summary_listener = function (data, box_id) {
 
         /*
             Initiate selector's buffer. This buffer contains all the selected JSTree nodes selected by the user for
@@ -225,7 +231,7 @@ define(['jquery',
         }
 
         /* Initiate variables. */
-        var s = '', source, template, dynamic_data, i, id;
+        var s = '', source, template, dynamic_data, i, that = this;
         source = $(templates).filter('#summary_item').html();
         template = Handlebars.compile(source);
         dynamic_data = {};
@@ -259,15 +265,22 @@ define(['jquery',
         $('.summary-item').click(function () {
 
             /* Un-select JSTree node. */
-            var local_box_id, local_tab_id, tree_id, item_id;
+            var local_box_id, local_tab_id, tree_id, item_id, selected_item, selected_item_idx;
             local_box_id = $(this).data('box');
             local_tab_id = $(this).data('tab');
             tree_id = 'content__' + local_box_id + '_' + local_tab_id;
             item_id = this.id.substring(0, this.id.length - 2);
             $('#' + tree_id).jstree(true).deselect_node("[id='" + item_id + "']");
 
+            /* Remove item from the buffer. */
+            selected_item = that.find_selected_item(item_id);
+            selected_item_idx = that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].indexOf(selected_item);
+            that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].splice(selected_item_idx, 1);
+
             /* Remove item from the summary. */
-            $('#' + this.id).remove();
+            console.debug('#' + this.id);
+            //$('#' + this.id).remove();
+            document.getElementById(this.id).remove();
 
         });
 
