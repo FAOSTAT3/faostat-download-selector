@@ -83,7 +83,6 @@ define(['jquery',
 
         /* Bind clear all functions. */
         $('#clear_all_button_' + this.CONFIG.suffix).click(function () {
-            console.debug(that.CONFIG.suffix);
             that.clear_all();
         });
 
@@ -279,6 +278,7 @@ define(['jquery',
             that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].splice(selected_item_idx, 1);
 
             /* Remove item from the summary. */
+            /*global document*/
             document.getElementById(this.id).remove();
 
         });
@@ -333,6 +333,7 @@ define(['jquery',
         var tab_idx = this.active_tab_idx();
         $('#content_' + this.CONFIG.suffix + '_' + tab_idx).jstree('deselect_all');
         $('#summary_' + this.CONFIG.suffix).empty();
+        this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] = [];
     };
 
     SELECTOR.prototype.get_user_selection = function () {
