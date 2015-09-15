@@ -181,7 +181,7 @@ define(['jquery',
 
                 /* Bind select function. */
                 tree.on('changed.jstree', function (e, data) {
-                    var box_id, tab_id;
+                    var box_id, tab_id, q;
                     tab_id = this.id.charAt(this.id.length - 1);
                     box_id = this.id.charAt(9);
                     that.summary_listener(data, box_id, tab_id);
@@ -191,11 +191,15 @@ define(['jquery',
                     /* Remove an item from the summary by clicking on the listbox. */
                     if (data.action === 'deselect_node') {
                         /*global document*/
-                        document.getElementById(data.node.id + '_' + box_id).remove();
-                        for (var q = that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].length - 1 ; q >= 0  ; q -= 1) {
-                            if (data.node.id === that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix][q].id) {
-                                that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].splice(q, 1);
+                        try {
+                            document.getElementById(data.node.id + '_' + box_id).remove();
+                            for (q = that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].length - 1; q >= 0; q -= 1) {
+                                if (data.node.id === that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix][q].id) {
+                                    that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].splice(q, 1);
+                                }
                             }
+                        } catch (ignore) {
+
                         }
                     }
                 });
