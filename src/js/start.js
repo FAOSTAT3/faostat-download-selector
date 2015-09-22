@@ -348,8 +348,10 @@ define(['jquery',
     };
 
     SELECTOR.prototype.clear_all = function () {
-        var tab_idx = this.active_tab_idx();
-        $('#content_' + this.CONFIG.suffix + '_' + tab_idx).jstree('deselect_all');
+        var i;
+        for (i = 0; i < this.CONFIG.tabs.length; i += 1) {
+            $('#content_' + this.CONFIG.suffix + '_' + i).jstree('deselect_all');
+        }
         $('#summary_' + this.CONFIG.suffix).empty();
         this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] = [];
     };
