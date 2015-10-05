@@ -1,10 +1,11 @@
 define({
     root : {
-        go_to: 'Go to...',
+        go_to: 'Filter...',
         select_all: 'Select All',
         clear_all: 'Clear All',
-        summary: 'Summary'
+        summary: 'Summary',
+        click_to_remove: 'Click to remove this item from selection.'
     },
-    F : true,
-    S : true
+    fr : true,
+    es : true
 });

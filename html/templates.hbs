@@ -9,24 +9,24 @@
             </div>
         </div>
     </div>
-    <div class='row'>
-        <div class='col-xs-12 col-sm-4 col-md-4 col-lg-4'>
-            <input class='form-control' placeholder='{{go_to_label}}' style='width: 100%; margin-bottom: 5px; float: left; height: 31px !important;' id='{{search_id}}'>
+    <div class='row faostat-download-selector-toolbar' >
+        <div class='col-xs-4'>
+            <input class='form-control' placeholder='{{go_to_label}}' style='margin-bottom: 5px; float: left; height: 31px !important;' id='{{search_id}}'>
         </div>
-        <div class='col-xs-12 col-sm-4 col-md-12 col-lg-4'>
-            <button class='btn btn-default btn-sm' type='submit' style='width: 100%; float: right;' id='{{clear_all_button_id}}'>
+        <div class='col-xs-4'>
+            <button class='btn btn-default btn-sm' type='submit' style='float: right;' id='{{clear_all_button_id}}'>
                 <i class='fa fa-times'></i> {{clear_all_label}}
             </button>
         </div>
-        <div class='col-xs-12 col-sm-4 col-md-12 col-lg-4'>
-            <button class='btn btn-default btn-sm' type='submit' style='width: 100%; float: right; margin-right: 5px;' id='{{select_all_button_id}}'>
+        <div class='col-xs-4'>
+            <button class='btn btn-default btn-sm' type='submit' style='float: right; margin-right: 5px;' id='{{select_all_button_id}}'>
                 <i class='fa fa-check-square-o'></i> {{select_all_label}}
             </button>
         </div>
     </div>
     <div class='row'>
-        <div class='col-xs-12 col-sm-12 col-md-12 col-lg-12'>
-            <div style='width: 100%; height: 50px; border: 1px solid #666;' id='{{summary_id}}'>
+        <div class='col-xs-12 faostat-download-selector-resume-holder'>
+            <div id='{{summary_id}}' class='faostat-summary-item'>
 
             </div>
         </div>
@@ -34,7 +34,15 @@
 </script>
 
 <script type='text/x-handlebars-template' id='summary_item'>
-    <div data-type='{{summary_item_type}}' id='{{summary_item_id}}' class='summary-item' data-code='{{summary_item_code}}'>
+    <div data-type='{{summary_item_type}}'
+         id='{{summary_item_id}}'
+         class='summary-item'
+         data-code='{{summary_item_code}}'
+         data-toggle='tooltip'
+         data-box='{{box_id}}'
+         data-tab='{{tab_id}}'
+         title='{{click_to_remove_label}}'
+         onclick='{{summary_item_click}}'>
         {{summary_item_label}}
     </div>
 </script>
@@ -49,6 +57,6 @@
 
 <script type='text/x-handlebars-template' id='tab_content_structure'>
     <div role='tabpanel' class='tab-pane fade' id='{{id}}' style='padding: 5px 0 5px 0;'>
-        <div id='{{content_id}}' style='height: 85px; width: 100%; overflow-y: auto; overflow-x: hidden;'></div>
+        <div id='{{content_id}}' style='height: 100px; width: 100%; overflow-y: auto; overflow-x: hidden;'></div>
     </div>
 </script>
