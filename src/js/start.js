@@ -75,9 +75,9 @@ define(['jquery',
         for (tab_idx = 0; tab_idx < this.CONFIG.tabs.length; tab_idx += 1) {
             this.add_tab_header(tab_idx, this.CONFIG.tabs[tab_idx].label);
             this.add_tab_content(tab_idx);
-            this.load_codelist(tab_idx, this.CONFIG.tabs[tab_idx].domain_code, this.CONFIG.tabs[tab_idx].id);
             this.bind_search(tab_idx);
         }
+        this.load_codelist();
 
         /* Rendered. */
         this.CONFIG.rendered = true;
@@ -94,6 +94,31 @@ define(['jquery',
 
         /* Show the first tab. */
         $($('#tab_headers_' + this.CONFIG.suffix).find('a')[0]).tab('show');
+
+    };
+
+    SELECTOR.prototype.load_codelist = function () {
+
+        /* This... */
+        var that = this;
+
+        /* Fetch codes. */
+        this.CONFIG.api.codes({
+            domain_code: this.CONFIG.tabs[0].domain_code,
+            lang: this.CONFIG.lang,
+            id: this.CONFIG.tabs[0].group_id,
+            subcodelists: null,
+            ord: null,
+            show_lists: true,
+            group_subdimensions: true
+        }).then(function (json) {
+            var i;
+            for (i = 0; i < that.CONFIG.tabs.length; i += 1) {
+                setTimeout(function (idx) {
+                    that.populate_codelist(json.data[idx], idx);
+                }, 1000, i);
+            }
+        });
 
     };
 
@@ -193,25 +218,6 @@ define(['jquery',
 
                 }
             }
-        });
-
-    };
-
-    SELECTOR.prototype.load_codelist = function (tab_idx, domain_code, codelist_id) {
-
-        /* This... */
-        var that = this;
-
-        /* Fetch codes. */
-        this.CONFIG.api.codes({
-            domain_code: domain_code,
-            lang: this.CONFIG.lang,
-            id: codelist_id,
-            subcodelists: null,
-            ord: null,
-            show_lists: true
-        }).then(function (json) {
-            that.populate_codelist(json, tab_idx);
         });
 
     };
