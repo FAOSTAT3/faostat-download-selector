@@ -1,12 +1,14 @@
 /*global define, _*/
+/*jslint nomen: true*/
 define(['jquery',
         'handlebars',
         'faostat_commons',
         'text!faostat_ui_download_selector/html/templates.hbs',
         'i18n!faostat_ui_download_selector/nls/translate',
+        'faostatapiclient',
         'sweetAlert',
         'bootstrap',
-        'jstree'], function ($, Handlebars, FAOSTATCommons, templates, translate, sweetAlert) {
+        'jstree'], function ($, Handlebars, FAOSTATCommons, templates, translate, FAOSTATAPIClient) {
 
     'use strict';
 
@@ -18,10 +20,11 @@ define(['jquery',
             placeholder_id: 'placeholder',
             suffix: 'area',
             rendered: false,
-            tabs :   [
+            tabs:   [
                 {
                     label: 'Test',
-                    rest: 'http://fenixapps2.fao.org/wds_5.1/rest/procedures/usp_GetListBox/faostatdb/GT/1/1/E'
+                    id: 'countries',
+                    domain_code: 'qc'
                 }
             ],
             selector_buffer: [],
@@ -47,6 +50,9 @@ define(['jquery',
         /* Store FAOSTAT language. */
         this.CONFIG.lang_faostat = FAOSTATCommons.iso2faostat(this.CONFIG.lang);
 
+        /* Initiate FAOSTAT API's client. */
+        this.CONFIG.api = new FAOSTATAPIClient();
+
         /* Load main structure. */
         source = $(templates).filter('#main_structure').html();
         template = Handlebars.compile(source);
@@ -69,7 +75,7 @@ define(['jquery',
         for (tab_idx = 0; tab_idx < this.CONFIG.tabs.length; tab_idx += 1) {
             this.add_tab_header(tab_idx, this.CONFIG.tabs[tab_idx].label);
             this.add_tab_content(tab_idx);
-            this.load_codelist(tab_idx, this.CONFIG.tabs[tab_idx].rest);
+            this.load_codelist(tab_idx, this.CONFIG.tabs[tab_idx].domain_code, this.CONFIG.tabs[tab_idx].id);
             this.bind_search(tab_idx);
         }
 
@@ -123,97 +129,89 @@ define(['jquery',
         $('#tab_contents_' + this.CONFIG.suffix).append(html);
     };
 
-    SELECTOR.prototype.load_codelist = function (tab_idx, rest) {
+    SELECTOR.prototype.populate_codelist = function (db_response, tab_idx) {
 
-        var that = this;
+        /* Data and variables. */
+        var json = db_response.data, payload, tree, i, that = this;
 
-        $.ajax({
-
-            type: 'GET',
-            url: rest,
-
-            success: function (response) {
-
-                /* Variables. */
-                var json, payload, tree, i;
-
-                /* Cast the response to JSON, if needed. */
-                json = response;
-                if (typeof json === 'string') {
-                    json = $.parseJSON(response);
+        /* Cast array to objects */
+        payload = [];
+        for (i = 0; i < json.length; i += 1) {
+            payload.push({
+                id: json[i].code + '_' + json[i].aggregate_type,
+                text: json[i].label,
+                li_attr: {
+                    code: json[i].code,
+                    type: json[i].aggregate_type,
+                    label: json[i].label,
+                    tab_idx: tab_idx
                 }
+            });
+        }
 
-                /* Cast array to objects */
-                payload = [];
-                for (i = 0; i < json.length; i += 1) {
-                    payload.push({
-                        id: json[i][0] + '_' + json[i][3],
-                        text: json[i][1],
-                        li_attr: {
-                            code: json[i][0],
-                            type: json[i][3],
-                            label: json[i][1],
-                            tab_idx: tab_idx
-                        }
-                    });
+        /* Init JSTree. */
+        tree = $('#content_' + this.CONFIG.suffix + '_' + tab_idx);
+        tree.jstree({
+
+            'plugins': ['checkbox', 'unique', 'search', 'striped', 'types', 'wholerow'],
+
+            'core': {
+                'data': payload,
+                'themes': {
+                    'stripes': true,
+                    'icons': false
                 }
-
-                /* Init JSTree. */
-                tree = $('#content_' + that.CONFIG.suffix + '_' + tab_idx);
-                tree.jstree({
-
-                    'plugins': ['checkbox', 'unique', 'search', 'striped', 'types', 'wholerow'],
-
-                    'core': {
-                        'data': payload,
-                        'themes': {
-                            'stripes': true,
-                            'icons': false
-                        }
-                    },
-
-                    'search': {
-                        'show_only_matches': true,
-                        'close_opened_onclear': false
-                    }
-
-                });
-
-                /* Bind select function. */
-                tree.on('changed.jstree', function (e, data) {
-                    var box_id, tab_id, q;
-                    tab_id = this.id.charAt(this.id.length - 1);
-                    box_id = this.id.charAt(9);
-                    that.summary_listener(data, box_id, tab_id);
-                    if (that.CONFIG.callback.onSelectionChange) {
-                        that.CONFIG.callback.onSelectionChange();
-                    }
-                    /* Remove an item from the summary by clicking on the listbox. */
-                    if (data.action === 'deselect_node') {
-                        /*global document*/
-                        try {
-                            document.getElementById(data.node.id + '_' + box_id).remove();
-                            for (q = that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].length - 1; q >= 0; q -= 1) {
-                                if (data.node.id === that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix][q].id) {
-                                    that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].splice(q, 1);
-                                }
-                            }
-                        } catch (ignore) {
-
-                        }
-                    }
-                });
-
             },
 
-            error: function (a) {
-                sweetAlert({
-                    title: translate.error,
-                    type: 'error',
-                    text: a.responseText
-                });
+            'search': {
+                'show_only_matches': true,
+                'close_opened_onclear': false
             }
 
+        });
+
+        /* Bind select function. */
+        tree.on('changed.jstree', function (unused, data) {
+            var box_id, tab_id, q;
+            tab_id = this.id.charAt(this.id.length - 1);
+            box_id = this.id.charAt(9);
+            that.summary_listener(data, box_id, tab_id);
+            if (that.CONFIG.callback.onSelectionChange) {
+                that.CONFIG.callback.onSelectionChange();
+            }
+            /* Remove an item from the summary by clicking on the listbox. */
+            if (data.action === 'deselect_node') {
+                /*global document*/
+                try {
+                    document.getElementById(data.node.id + '_' + box_id).remove();
+                    for (q = that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].length - 1; q >= 0; q -= 1) {
+                        if (data.node.id === that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix][q].id) {
+                            that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].splice(q, 1);
+                        }
+                    }
+                } catch (ignore) {
+
+                }
+            }
+        });
+
+    };
+
+    SELECTOR.prototype.load_codelist = function (tab_idx, domain_code, codelist_id) {
+
+        /* This... */
+        var that = this;
+
+        /* Fetch codes. */
+        this.CONFIG.api.codes({
+            domain_code: domain_code,
+            lang: this.CONFIG.lang,
+            id: codelist_id,
+            subcodelists: null,
+            ord: null,
+            show_lists: true
+        }).then(function (json) {
+            that.populate_codelist(json, tab_idx);
         });
 
     };
@@ -258,7 +256,6 @@ define(['jquery',
         }
 
         /* Iterate over selected items. */
-        /* TODO: iterate over buffer, data.instance.get_node??? */
         for (i = 0; i < this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix].length; i += 1) {
             dynamic_data = {
                 click_to_remove_label: translate.click_to_remove,
