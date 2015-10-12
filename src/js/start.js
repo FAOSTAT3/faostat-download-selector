@@ -367,7 +367,8 @@ define(['jquery',
             if (divs[i].id.indexOf('>') > -1) {
                 code += '>';
             }
-            out.push("'" + code + "'");
+            //out.push("'" + code + "'");
+            out.push(code);
         }
         return out;
     };
