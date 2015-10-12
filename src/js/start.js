@@ -116,7 +116,7 @@ define(['jquery',
             for (i = 0; i < that.CONFIG.tabs.length; i += 1) {
                 setTimeout(function (idx) {
                     that.populate_codelist(json.data[idx], idx);
-                }, 1000, i);
+                }, 1500, i);
             }
         });
 
