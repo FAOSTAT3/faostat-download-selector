@@ -375,11 +375,11 @@ define(['jquery',
     };
 
     SELECTOR.prototype.dispose = function () {
-        $('#select_all_button_' + this.CONFIG.suffix).off();
-        $('#clear_all_button_' + this.CONFIG.suffix).off();
         this.CONFIG.tree.off();
         $('.summary-item').off();
         $('#search_' + this.CONFIG.suffix).off();
+        $('#clear_all_button_' + this.CONFIG.suffix).off();
+        $('#select_all_button_' + this.CONFIG.suffix).off();
     };
 
     return SELECTOR;
