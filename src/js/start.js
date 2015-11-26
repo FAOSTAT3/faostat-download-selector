@@ -371,6 +371,10 @@ define(['jquery',
         return out;
     };
 
+    SELECTOR.prototype.dispose = function () {
+
+    };
+
     return SELECTOR;
 
 });
