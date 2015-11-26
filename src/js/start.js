@@ -83,11 +83,13 @@ define(['jquery',
         this.CONFIG.rendered = true;
 
         /* Bind select all functions. */
+        $('#select_all_button_' + this.CONFIG.suffix).off();
         $('#select_all_button_' + this.CONFIG.suffix).click(function () {
             that.select_all();
         });
 
         /* Bind clear all functions. */
+        $('#clear_all_button_' + this.CONFIG.suffix).off();
         $('#clear_all_button_' + this.CONFIG.suffix).click(function () {
             that.clear_all();
         });
@@ -155,7 +157,7 @@ define(['jquery',
     SELECTOR.prototype.populate_codelist = function (db_response, tab_idx) {
 
         /* Data and variables. */
-        var json = db_response.data, payload, tree, i, that = this;
+        var json = db_response.data, payload, i, that = this;
 
         /* Cast array to objects */
         payload = [];
@@ -173,8 +175,8 @@ define(['jquery',
         }
 
         /* Init JSTree. */
-        tree = $('#content_' + this.CONFIG.suffix + '_' + tab_idx);
-        tree.jstree({
+        this.CONFIG.tree = $('#content_' + this.CONFIG.suffix + '_' + tab_idx);
+        this.CONFIG.tree.jstree({
 
             'plugins': ['checkbox', 'unique', 'search', 'striped', 'types', 'wholerow'],
 
@@ -194,7 +196,7 @@ define(['jquery',
         });
 
         /* Bind select function. */
-        tree.on('changed.jstree', function (unused, data) {
+        this.CONFIG.tree.on('changed.jstree', function (unused, data) {
             var box_id, tab_id, q;
             tab_id = this.id.charAt(this.id.length - 1);
             box_id = this.id.charAt(9);
@@ -277,6 +279,7 @@ define(['jquery',
         $('#summary_' + this.CONFIG.suffix).empty().html(s);
 
         /* Remove item on click. */
+        $('.summary-item').off();
         $('.summary-item').click(function () {
 
             /* Un-select JSTree node. */
@@ -311,6 +314,7 @@ define(['jquery',
 
     SELECTOR.prototype.bind_search = function (tab_idx) {
         var to = false, that = this;
+        $('#search_' + this.CONFIG.suffix).off();
         $('#search_' + this.CONFIG.suffix).keyup(function () {
             if (to) {
                 /*global clearTimeout*/
@@ -365,14 +369,17 @@ define(['jquery',
             if (divs[i].id.indexOf('>') > -1) {
                 code += '>';
             }
-            //out.push("'" + code + "'");
             out.push(code);
         }
         return out;
     };
 
     SELECTOR.prototype.dispose = function () {
-
+        $('#select_all_button_' + this.CONFIG.suffix).off();
+        $('#clear_all_button_' + this.CONFIG.suffix).off();
+        this.CONFIG.tree.off();
+        $('.summary-item').off();
+        $('#search_' + this.CONFIG.suffix).off();
     };
 
     return SELECTOR;
