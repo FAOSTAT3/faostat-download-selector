@@ -197,26 +197,30 @@ define(['jquery',
 
         /* Bind select function. */
         this.CONFIG.tree.on('changed.jstree', function (unused, data) {
-            var box_id, tab_id, q;
-            tab_id = this.id.charAt(this.id.length - 1);
-            box_id = this.id.charAt(9);
-            that.summary_listener(data, box_id, tab_id);
-            if (that.CONFIG.callback.onSelectionChange) {
-                that.CONFIG.callback.onSelectionChange();
-            }
-            /* Remove an item from the summary by clicking on the listbox. */
-            if (data.action === 'deselect_node') {
-                /*global document*/
-                try {
-                    document.getElementById(data.node.id + '_' + box_id).remove();
-                    for (q = that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].length - 1; q >= 0; q -= 1) {
-                        if (data.node.id === that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix][q].id) {
-                            that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].splice(q, 1);
-                        }
-                    }
-                } catch (ignore) {
-
+            try {
+                var box_id, tab_id, q;
+                tab_id = this.id.charAt(this.id.length - 1);
+                box_id = this.id.charAt(9);
+                that.summary_listener(data, box_id, tab_id);
+                if (that.CONFIG.callback.onSelectionChange) {
+                    that.CONFIG.callback.onSelectionChange();
                 }
+                /* Remove an item from the summary by clicking on the listbox. */
+                if (data.action === 'deselect_node') {
+                    /*global document*/
+                    try {
+                        document.getElementById(data.node.id + '_' + box_id).remove();
+                        for (q = that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].length - 1; q >= 0; q -= 1) {
+                            if (data.node.id === that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix][q].id) {
+                                that.CONFIG.selector_buffer['#summary_' + that.CONFIG.suffix].splice(q, 1);
+                            }
+                        }
+                    } catch (ignore) {
+
+                    }
+                }
+            } catch (e) {
+                console.debug(e);
             }
         });
 
@@ -314,7 +318,6 @@ define(['jquery',
 
     SELECTOR.prototype.bind_search = function (tab_idx) {
         var to = false, that = this;
-        $('#search_' + this.CONFIG.suffix).off();
         $('#search_' + this.CONFIG.suffix).keyup(function () {
             if (to) {
                 /*global clearTimeout*/
