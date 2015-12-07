@@ -2,13 +2,13 @@
 /*jslint nomen: true*/
 define(['jquery',
         'handlebars',
-        'faostat_commons',
+        'globals/Common',
         'text!faostat_ui_download_selector/html/templates.hbs',
         'i18n!faostat_ui_download_selector/nls/translate',
         'faostatapiclient',
         'sweetAlert',
         'bootstrap',
-        'jstree'], function ($, Handlebars, FAOSTATCommons, templates, translate, FAOSTATAPIClient) {
+        'jstree'], function ($, Handlebars, Common, templates, translate, FAOSTATAPIClient) {
 
     'use strict';
 
@@ -46,9 +46,6 @@ define(['jquery',
 
         /* Fix the language, if needed. */
         this.CONFIG.lang = this.CONFIG.lang !== null ? this.CONFIG.lang : 'en';
-
-        /* Store FAOSTAT language. */
-        this.CONFIG.lang_faostat = FAOSTATCommons.iso2faostat(this.CONFIG.lang);
 
         /* Initiate FAOSTAT API's client. */
         this.CONFIG.api = new FAOSTATAPIClient();
@@ -107,7 +104,7 @@ define(['jquery',
         /* Fetch codes. */
         this.CONFIG.api.codes({
             domain_code: this.CONFIG.tabs[0].domain_code,
-            lang: this.CONFIG.lang,
+            lang: Common.getLocale(),
             id: this.CONFIG.tabs[0].group_id,
             subcodelists: null,
             ord: null,
@@ -220,7 +217,7 @@ define(['jquery',
                     }
                 }
             } catch (e) {
-                console.debug(e);
+                //console.debug(e);
             }
         });
 
