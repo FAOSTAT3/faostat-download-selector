@@ -39,7 +39,7 @@ define(['jquery',
     SELECTOR.prototype.init = function (config) {
 
         /* Variables. */
-        var that = this, source, template, dynamic_data, html, tab_idx;
+        var that = this, source, template, dynamic_data, html, tab_idx, coding_systems = [];
 
         /* Extend default configuration. */
         this.CONFIG = $.extend(true, {}, this.CONFIG, config);
@@ -49,6 +49,15 @@ define(['jquery',
 
         /* Initiate FAOSTAT API's client. */
         this.CONFIG.api = new FAOSTATAPIClient();
+
+        /* Coding systems. */
+        for (tab_idx = 0; tab_idx < this.CONFIG.tabs[0].coding_systems.length; tab_idx += 1) {
+            coding_systems.push({
+                code: this.CONFIG.tabs[0].coding_systems[tab_idx],
+                label: this.CONFIG.tabs[0].coding_systems[tab_idx],
+                suffix: this.CONFIG.suffix
+            });
+        }
 
         /* Load main structure. */
         source = $(templates).filter('#main_structure').html();
@@ -63,7 +72,9 @@ define(['jquery',
             clear_all_button_id: 'clear_all_button_' + this.CONFIG.suffix,
             search_id: 'search_' + this.CONFIG.suffix,
             summary_id: 'summary_' + this.CONFIG.suffix,
-            summary_label: translate.summary
+            summary_label: translate.summary,
+            coding_systems: coding_systems,
+            has_coding_systems: coding_systems.length > 0
         };
         html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
@@ -372,6 +383,10 @@ define(['jquery',
             out.push(code);
         }
         return out;
+    };
+
+    SELECTOR.prototype.get_selected_coding_system = function () {
+        return $('input[name="coding_systems' + this.CONFIG.suffix + '"]:checked').val();
     };
 
     SELECTOR.prototype.dispose = function () {
