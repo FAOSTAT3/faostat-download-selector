@@ -28,55 +28,51 @@
     <div class="panel panel-default">
         <div class="panel-heading">
             <div role='tabpanel'>
-                <div class="fs-tab-holder">
-                    <div class='row'>
-                        <div class='col-lg-10'>
-                            <ul class='nav nav-tabs' role='tablist' id='{{tab_headers_id}}'>
 
-                            </ul>
+                <div class='row'>
+                    <div class='col-xs-10'>
+                        <div class="fs-tab-holder">
+                            <ul class='nav nav-tabs' role='tablist' id='{{tab_headers_id}}'></ul>
                         </div>
-                        <div class='col-lg-2'>
+
+                    </div>
+                    <div class='col-xs-2'>
+                        {{#if has_coding_systems}}
                             <div class='btn-group pull-right'>
-                                {{#if has_coding_systems}}
-                                    <button type='button' class='btn btn-default btn-xs dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+
+                                <button type='button' class='btn btn-default btn-xs dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
                                         <span style='margin-left: -5px;'>
                                             &nbsp;<i class='fa fa-cog'></i> <span class='caret'></span>
                                         </span>
-                                    </button>
-                                    <ul class='dropdown-menu' style='padding-left: 8px; padding-right: 8px;'>
-                                        <li>
-                                            <b>
-                                                Coding Systems
-                                            </b>
-                                        </li>
-                                        <li role='separator' class='divider'>
+                                </button>
+                                <ul class='dropdown-menu' style='padding-left: 8px; padding-right: 8px;'>
+                                    <li>
+                                        <b>
+                                            Coding Systems
+                                        </b>
+                                    </li>
+                                    <li role='separator' class='divider'>
 
-                                        </li>
-                                        {{#each coding_systems}}
-                                            <li>
-                                                <div class='radio'>
-                                                    <label>
+                                    </li>
+                                    {{#each coding_systems}}
+                                        <li>
+                                            <div class='radio'>
+                                                <label>
                                                     <input type='radio' name='coding_systems{{this.suffix}}' id='{{this.label}}' value='{{this.label}}' {{#if @first}}checked=''{{/if}}>
-                                                        {{this.label}}
-                                                    </label>
-                                                </div>
-                                            </li>
-                                        {{/each}}
-                                    </ul>
-                                {{/if}}
+                                                    {{this.label}}
+                                                </label>
+                                            </div>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+
                             </div>
-                        </div>
+                        {{/if}}
                     </div>
-                    <!--<br>-->
-                    <!--<br>-->
-                    <!--<br>-->
-                    <!--<br>-->
-                    <!--<br>-->
-                    <!--<br>-->
-                    <!--<br>-->
-                    <!--<br>-->
-                    <!--<br>-->
                 </div>
+
+
+
             </div>
         </div>
 
