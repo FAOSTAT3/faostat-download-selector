@@ -15,8 +15,6 @@ define(['jquery',
     function SELECTOR() {
 
         this.CONFIG = {
-            lang: 'en',
-            lang_faostat: 'E',
             placeholder_id: 'placeholder',
             suffix: 'area',
             rendered: false,
@@ -43,9 +41,6 @@ define(['jquery',
 
         /* Extend default configuration. */
         this.CONFIG = $.extend(true, {}, this.CONFIG, config);
-
-        /* Fix the language, if needed. */
-        this.CONFIG.lang = this.CONFIG.lang !== null ? this.CONFIG.lang : 'en';
 
         /* Initiate FAOSTAT API's client. */
         this.CONFIG.api = new FAOSTATAPIClient();
