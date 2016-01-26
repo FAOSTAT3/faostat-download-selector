@@ -1,6 +1,4 @@
 
-
-
 <div class="panel panel-default {{#if class}}{{class}}{{/if}}" {{#if style}}style="{{style}}"{{/if}}>
     <div class="panel-heading">
         {{#if addExport}}
@@ -20,10 +18,7 @@
 </div>
 
 
-
-
 <script type='text/x-handlebars-template' id='main_structure'>
-
 
     <div class="panel panel-default">
         <div class="panel-heading">
@@ -34,7 +29,6 @@
                         <div class="fs-tab-holder">
                             <ul class='nav nav-tabs' role='tablist' id='{{tab_headers_id}}'></ul>
                         </div>
-
                     </div>
                     <div class='col-xs-2'>
                         {{#if has_coding_systems}}
@@ -46,11 +40,7 @@
                                         </span>
                                 </button>
                                 <ul class='dropdown-menu' style='padding-left: 8px; padding-right: 8px;'>
-                                    <li>
-                                        <b>
-                                            Coding Systems
-                                        </b>
-                                    </li>
+                                    <li><b>{{conding_system}}Coding System</b></li>
                                     <li role='separator' class='divider'>
 
                                     </li>
@@ -70,9 +60,6 @@
                         {{/if}}
                     </div>
                 </div>
-
-
-
             </div>
         </div>
 
@@ -84,23 +71,22 @@
 
             <div class="row">
                 <div class='col-xs-5'>
-
-                        <input class='form-control' placeholder='{{go_to_label}}' id='{{search_id}}'>
-
-                        </div>
-
-                <div class='col-xs-7'>
-                    <div class="btn-group">
-                    <button class='btn btn-default btn-sm truncate' type='submit' id='{{clear_all_button_id}}'>
-                        {{clear_all_label}}
-                    </button>
-                    <button class='btn btn-default btn-sm truncate' type='submit' id='{{select_all_button_id}}'>
-                        {{select_all_label}}
-                    </button>
-                    </div>
+                    <input class='form-control' placeholder='{{go_to_label}}' id='{{search_id}}'>
                 </div>
-            </div>
 
+                {{#if is_multiple_selection}}
+                    <div class='col-xs-7'>
+                        <div class="btn-group">
+                        <button class='btn btn-default btn-sm truncate' type='submit' id='{{clear_all_button_id}}'>
+                            {{clear_all_label}}
+                        </button>
+                        <button class='btn btn-default btn-sm truncate' type='submit' id='{{select_all_button_id}}'>
+                            {{select_all_label}}
+                        </button>
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
 
             <div class='row'>
                 <div class='col-xs-12 faostat-download-selector-resume-holder'>

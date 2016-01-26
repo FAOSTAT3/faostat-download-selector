@@ -1,6 +1,7 @@
 /*global define, _*/
 /*jslint nomen: true*/
 define(['jquery',
+        'loglevel',
         'handlebars',
         'globals/Common',
         'text!faostat_ui_download_selector/html/templates.hbs',
@@ -8,7 +9,7 @@ define(['jquery',
         'faostatapiclient',
         'sweetAlert',
         'bootstrap',
-        'jstree'], function ($, Handlebars, Common, templates, translate, FAOSTATAPIClient) {
+        'jstree'], function ($, log, Handlebars, Common, templates, translate, FAOSTATAPIClient) {
 
     'use strict';
 
@@ -18,6 +19,11 @@ define(['jquery',
             placeholder_id: 'placeholder',
             suffix: 'area',
             rendered: false,
+
+            // TODO: multiple and show_lists should be the same thing?
+            multiple: true,
+            show_lists: true,
+
             tabs:   [
                 {
                     label: 'Test',
@@ -35,6 +41,8 @@ define(['jquery',
     }
 
     SELECTOR.prototype.init = function (config) {
+
+        log.info('SELECTOR.init; config', config);
 
         /* Variables. */
         var that = this, source, template, dynamic_data, html, tab_idx, coding_systems = [];
@@ -69,7 +77,9 @@ define(['jquery',
             summary_id: 'summary_' + this.CONFIG.suffix,
             summary_label: translate.summary,
             coding_systems: coding_systems,
-            has_coding_systems: coding_systems.length > 0
+            has_coding_systems: coding_systems.length > 0,
+            is_multiple_selection: this.CONFIG.multiple
+
         };
         html = template(dynamic_data);
         $('#' + this.CONFIG.placeholder_id).html(html);
@@ -114,7 +124,7 @@ define(['jquery',
             id: this.CONFIG.tabs[0].group_id,
             subcodelists: null,
             ord: null,
-            show_lists: true,
+            show_lists: this.CONFIG.show_lists,
             group_subdimensions: true
         }).then(function (json) {
             var i;
@@ -160,7 +170,11 @@ define(['jquery',
     SELECTOR.prototype.populate_codelist = function (db_response, tab_idx) {
 
         /* Data and variables. */
-        var json = db_response.data, payload, i, that = this;
+        var json = db_response.data,
+            payload,
+            i,
+            multiple = this.CONFIG.multiple,
+            that = this;
 
         /* Cast array to objects */
         payload = [];
@@ -184,6 +198,7 @@ define(['jquery',
             'plugins': ['checkbox', 'unique', 'search', 'striped', 'types', 'wholerow'],
 
             'core': {
+                'multiple' : multiple,
                 'data': payload,
                 'themes': {
                     'stripes': true,
@@ -199,15 +214,23 @@ define(['jquery',
         });
 
         /* Bind select function. */
-        this.CONFIG.tree.on('changed.jstree', function (unused, data) {
+        this.CONFIG.tree.on('changed.jstree', function (event, data) {
+
+            log.info('SELECTOR; changed.jstree', event, data)
+            log.info('SELECTOR; Multiselection', $(this).jstree().settings);
+
             try {
                 var box_id, tab_id, q;
                 tab_id = this.id.charAt(this.id.length - 1);
                 box_id = this.id.charAt(9);
-                that.summary_listener(data, box_id, tab_id);
+
+                that.summary_listener(data, box_id, tab_id, $(this).jstree().settings.core.multiple);
+
                 if (that.CONFIG.callback.onSelectionChange) {
                     that.CONFIG.callback.onSelectionChange();
                 }
+
+
                 /* Remove an item from the summary by clicking on the listbox. */
                 if (data.action === 'deselect_node') {
                     /*global document*/
@@ -222,6 +245,10 @@ define(['jquery',
 
                     }
                 }
+
+                log.info(that.CONFIG.selector_buffer);
+
+
             } catch (e) {
                 //console.debug(e);
             }
@@ -245,13 +272,16 @@ define(['jquery',
         });
     };
 
-    SELECTOR.prototype.summary_listener = function (data, box_id) {
+    SELECTOR.prototype.summary_listener = function (data, box_id, tab_id, multiSelection) {
 
         /*
             Initiate selector's buffer. This buffer contains all the selected JSTree nodes selected by the user for
             a given box, e.g. Areas. This is used to enable cross-tabs selection.
         */
-        if (this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] === undefined) {
+
+        log.info('SELECTOR.summary_listener; multiselection', multiSelection)
+
+        if (multiSelection === false || this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] === undefined) {
             this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] = [];
         }
 
@@ -367,20 +397,43 @@ define(['jquery',
         this.CONFIG.selector_buffer['#summary_' + this.CONFIG.suffix] = [];
     };
 
-    SELECTOR.prototype.get_user_selection = function () {
-        var out = [], divs, i, code;
+    SELECTOR.prototype.get_user_selection = function (type) {
+        var out = [],
+            type = type || 'standard',
+            divs,
+            i,
+            code;
+
+
         divs = $('#summary_' + this.CONFIG.suffix + ' div');
         for (i = 0; i < divs.length; i += 1) {
+
             code = $(divs[i]).data('code');
+
+            log.info(code, $(divs[i]).data('code'))
+            log.info(divs[i].id.indexOf('>'))
+
+            // TODO: this check on the aggregation should be handled by the API or the DB with the right code
             if (divs[i].id.indexOf('>') > -1) {
                 code += '>';
             }
+
             out.push(code);
         }
+
+        if ( type === 'obj') {
+            return {
+                codes: out,
+                parameter: this.CONFIG.options.parameter,
+                index: this.CONFIG.options.order
+            };
+        }
+
         return out;
     };
 
     SELECTOR.prototype.get_selected_coding_system = function () {
+        log.info('SELECTOR.get_selected_coding_system; coding_system:', $('input[name="coding_systems' + this.CONFIG.suffix + '"]:checked').val())
         return $('input[name="coding_systems' + this.CONFIG.suffix + '"]:checked').val();
     };
 
