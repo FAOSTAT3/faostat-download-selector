@@ -246,7 +246,7 @@ define(['jquery',
                     }
                 }
 
-                log.info(that.CONFIG.selector_buffer);
+                log.info('SELECTOR; CONFIG.selector_buffer', that.CONFIG.selector_buffer);
 
 
             } catch (e) {
@@ -410,8 +410,8 @@ define(['jquery',
 
             code = $(divs[i]).data('code');
 
-            log.info(code, $(divs[i]).data('code'))
-            log.info(divs[i].id.indexOf('>'))
+            //log.info(code, $(divs[i]).data('code'))
+            //log.info(divs[i].id.indexOf('>'))
 
             // TODO: this check on the aggregation should be handled by the API or the DB with the right code
             if (divs[i].id.indexOf('>') > -1) {
