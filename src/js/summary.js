@@ -122,6 +122,10 @@ define([
         }
         else {
             if ( this.o.validateEmptySelection ) {
+
+                // TODO: there could be an event with a timer "lock"
+                $("html, body").animate({ scrollTop: this.$CONTAINER.parent().parent().parent().parent().parent().offset().top}, "slow");
+                //$('html, body').animate({ scrollTop: this.$CONTAINER.parent().parent().offset().top }, 'slow');
                 this.$CONTAINER.html('<h5 style="color:red">*Please make at least one selection</h5>');
             }
         }
