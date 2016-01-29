@@ -1,8 +1,9 @@
-/*global define*/
+/*global define, amplify*/
 /*jslint nomen: true*/
 define([
     'jquery',
     'loglevel',
+    'config/Events',
     'globals/Common',
     'text!fs-s/html/templates.hbs',
     'i18n!fs-s/nls/translate',
@@ -14,7 +15,7 @@ define([
     // Add selector
     'bootstrap',
     'amplify'
-], function ($, log, Common, template, i18nLabels, Tab, Summary, FAOSTATAPIClient, Handlebars, _) {
+], function ($, log, E, Common, template, i18nLabels, Tab, Summary, FAOSTATAPIClient, Handlebars, _) {
 
     'use strict';
 
@@ -278,6 +279,10 @@ define([
 
         this.$DESELECT_ALL.on('click', function() {
             self.deselectAll();
+        });
+
+        this.$CODING_SYSTEMS.on('click', function() {
+            amplify.publish(E.DOWNLOAD_SELECTION_CHANGE);
         });
 
     };

@@ -1,4 +1,4 @@
-/*global define*/
+/*global define, amplify*/
 /*jslint nomen: true*/
 define([
     'jquery',
@@ -25,16 +25,6 @@ define([
             validateEmptySelection: true,
 
             multiple: true
-
-        // coding system
-
-        // summary
-
-        // tabs
-
-        // each tab
-
-        // single or multiple selection tree
 
     };
 
@@ -76,7 +66,6 @@ define([
         this.$CONTAINER.html(t({items: this.selections}));
 
         this.bindEventListeners();
-
 
         amplify.publish(E.DOWNLOAD_SELECTION_CHANGE);
 
