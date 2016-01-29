@@ -1,41 +1,4 @@
 
-<!--<script type='text/x-handlebars-template' id='main_structure'>-->
-    <!--<div class='row'>-->
-        <!--<div class='col-xs-12'>-->
-            <!--<div role='tabpanel'>-->
-                <!--<div class="fs-tab-holder">-->
-                    <!--<ul class='nav nav-tabs' role='tablist' data-role="tabs-list"></ul>-->
-                <!--</div>-->
-                <!--<div class='tab-content' data-role="tabs-content">-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class='row faostat-download-selector-toolbar'>-->
-        <!--<div class='col-xs-4'>-->
-            <!--<input class='form-control' placeholder='{{tree_filter}}' data-role="tree-filter">-->
-        <!--</div>-->
-        <!--<div class='col-xs-4'>-->
-            <!--<button class='btn btn-default btn-sm' type='submit' data-role="deselect-all">-->
-                <!--{{clear_all}}-->
-            <!--</button>-->
-        <!--</div>-->
-        <!--<div class='col-xs-4'>-->
-            <!--<button class='btn btn-default btn-sm' type='submit' data-role="select-all">-->
-                <!--{{select_all}}-->
-            <!--</button>-->
-        <!--</div>-->
-    <!--</div>-->
-    <!--<div class='row'>-->
-        <!--<div class='col-xs-12 faostat-download-selector-resume-holder'>-->
-            <!--<div id='{{summary_id}}' class='faostat-summary-item'>-->
-
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
-<!--</script>-->
-
-
 <script type='text/x-handlebars-template' id='main_structure'>
 
     <div class="panel panel-default">
@@ -49,7 +12,7 @@
                         </div>
                     </div>
                     <div class='col-xs-2'>
-                        {{#if has_coding_systems}}
+                        {{#if coding_systems}}
                             <div class='btn-group pull-right'>
 
                                 <button type='button' class='btn btn-default btn-xs dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
@@ -66,8 +29,7 @@
                                         <li>
                                             <div class='radio'>
                                                 <label>
-                                                    <input type='radio' name='coding_systems{{this.suffix}}' id='{{this.label}}' value='{{this.label}}' {{#if @first}}checked=''{{/if}}>
-                                                    {{this.label}}
+                                                    <input type='radio' name='coding_system_{{this.id}}' value='{{this.code}}' {{#if @first}}checked='checked'{{/if}}>{{this.label}}
                                                 </label>
                                             </div>
                                         </li>

@@ -32,24 +32,7 @@ define([
 
         defaultOptions = {
 
-
-            multiple: true,
-
-            tabDefaultConfig: {
-
-                multiple: true
-
-            }
-
-        // coding system
-
-        // summary
-
-        // tabs
-
-        // each tab
-
-        // single or multiple selection tree
+            multiple: true
 
     };
 
@@ -74,12 +57,16 @@ define([
 
     Selector.prototype.initVariables = function () {
 
+        // TODO: refactor coding system API?
+        var coding_systems = this.getCodingSystems();
+
         this.$CONTAINER = $(this.o.container);
 
         var html = $(template).filter('#main_structure').html(),
             t = Handlebars.compile(html),
             options = $.extend(true, {}, i18nLabels, {
-                is_multiple_selection: this.o.multiple
+                is_multiple_selection: this.o.multiple,
+                coding_systems: coding_systems
             });
 
         log.info(i18nLabels);
@@ -95,6 +82,23 @@ define([
         this.$DESELECT_ALL = this.$CONTAINER.find(s.DESELECT_ALL);
 
     };
+    Selector.prototype.getCodingSystems = function() {
+
+        var codes = [],
+            id = Math.random().toString().replace('.', ''),
+            codingSystems = this.o.dimension.subdimensions[0].coding_systems;
+
+        log.info('here')
+        _.each(codingSystems, function(c) {
+            codes.push({
+                id: id,
+                code: c,
+                label: c
+            });
+        });
+
+        return codes.length > 0? codes : null;
+     };
 
     Selector.prototype.createTab = function (subdimension) {
 
@@ -109,7 +113,6 @@ define([
 
         this.summary = this.initSummary();
         this.tabs = {};
-
 
         // for each subdimension create a tab
         _.each(subdimensions, function(s, index) {
