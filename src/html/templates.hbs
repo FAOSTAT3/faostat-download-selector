@@ -27,7 +27,7 @@
                                     </li>
                                     {{#each coding_systems}}
                                         <li>
-                                            <div class='radio'>
+                                            <div class='radio' data-role="coding-systems">
                                                 <label>
                                                     <input type='radio' name='coding_system_{{this.id}}' value='{{this.code}}' {{#if @first}}checked='checked'{{/if}}>{{this.label}}
                                                 </label>

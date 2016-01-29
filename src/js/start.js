@@ -23,6 +23,8 @@ define([
             TABS_LIST: '[data-role="tabs-list"]',
             TABS_CONTENT: '[data-role="tabs-content"]',
 
+            CODING_SYSTEMS: '[data-role="coding-systems"]',
+
             TREE_FILTER: '[data-role="tree-filter"]',
             SUMMARY: '[data-role="summary"]',
             SELECT_ALL: '[data-role="select-all"]',
@@ -80,6 +82,7 @@ define([
         this.$TREE_FILTER = this.$CONTAINER.find(s.TREE_FILTER);
         this.$SELECT_ALL = this.$CONTAINER.find(s.SELECT_ALL);
         this.$DESELECT_ALL = this.$CONTAINER.find(s.DESELECT_ALL);
+        this.$CODING_SYSTEMS = this.$CONTAINER.find(s.CODING_SYSTEMS);
 
     };
     Selector.prototype.getCodingSystems = function() {
@@ -233,6 +236,7 @@ define([
     Selector.prototype.getSelections = function () {
 
         var codes = this.summary.getSelections(),
+            codingSystem = this.$CODING_SYSTEMS.find("input[type='radio']:checked").val(),
             parameter = this.o.parameter,
             id = this.o.id,
             request = {},
@@ -251,6 +255,12 @@ define([
             codes: codes,
             request: request
         };
+
+        // TODO: change with API giving the right parameter to use
+        if (codingSystem !== undefined && codingSystem !== null ) {
+            var index = parameter.match(/\d+/)[0];
+            obj.request['List'+ index +'AltCodes'] = codingSystem;
+        }
 
         log.info('Selector.getSelections', obj);
 
