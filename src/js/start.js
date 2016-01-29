@@ -133,6 +133,7 @@ define([
             tTabList = Handlebars.compile(htmlTabList),
             htmlTabContent = $(template).filter('#tab_content_structure').html(),
             tTabContent = Handlebars.compile(htmlTabContent),
+            multipleSelection = this.o.multiple,
             tab = new Tab(),
             code = this.o.code,
             o = $.extend({
@@ -151,7 +152,8 @@ define([
             summary: this.summary,
             dimension: dimension,
             code: code,
-            id: id
+            id: id,
+            multiple: multipleSelection
         });
 
         // shows the first tab
@@ -162,10 +164,13 @@ define([
 
     Selector.prototype.initSummary = function () {
 
+        var multipleSelection = this.o.multiple;
+
         this.summary = new Summary();
         this.summary.init({
             container: this.$SUMMARY,
-            onRemove: _.bind(this.deselectItem, this)
+            onRemove: _.bind(this.deselectItem, this),
+            multiple: multipleSelection
         });
 
         return this.summary;

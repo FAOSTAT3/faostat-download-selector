@@ -63,11 +63,6 @@ define([
 
         this.$TREE = this.$CONTAINER.find(s.TREE);
 
-
-        //amplify.publish(E.LOADING_SHOW, {
-        //    container: this.$TREE
-        //});
-
     };
 
     Tab.prototype.initComponents = function () {
@@ -101,9 +96,8 @@ define([
     Tab.prototype.initTree = function (d) {
 
         var data = this.prepareTreeData(d),
-            multiple = this.o.multiple || true,
+            multiple = this.o.multiple,
             self = this;
-
 
         /* Init JSTree. */
         this.$TREE.jstree({

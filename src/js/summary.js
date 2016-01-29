@@ -3,10 +3,11 @@
 define([
     'jquery',
     'loglevel',
+    'config/Events',
     'text!fs-s/html/templates.hbs',
     'handlebars',
     'underscore'
-], function ($, log, template, Handlebars, _) {
+], function ($, log, E, template, Handlebars, _) {
 
     'use strict';
 
@@ -21,7 +22,9 @@ define([
             onRemove: 'callbak',
 
             // validate if there is at least one selection
-            validateEmptySelection: true
+            validateEmptySelection: true,
+
+            multiple: true
 
         // coding system
 
@@ -74,13 +77,21 @@ define([
 
         this.bindEventListeners();
 
+
+        amplify.publish(E.DOWNLOAD_SELECTION_CHANGE);
+
     };
 
     Summary.prototype.add = function (items) {
 
         var self = this;
 
-        _.each(items, function(v) {
+        // if single selection enabled, reset selections
+        if ( this.o.multiple === false) {
+            self.selections = {};
+        }
+
+        _.each(items, function (v) {
             self.selections[v.id] = v;
         });
 
