@@ -87,7 +87,15 @@ define([
             ord: null
         }).then(function(d) {
 
-            self.initTree(d);
+            if (d.data.length > 0) {
+                self.initTree(d);
+            }
+            else {
+                // TODO: make it nice
+                self.$TREE.html('<h5 style="text-align: center;">No selection available</h5>');
+            }
+
+            //self.initTree(d);
 
         });
 
