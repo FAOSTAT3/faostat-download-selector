@@ -1,0 +1,149 @@
+
+<!--<script type='text/x-handlebars-template' id='main_structure'>-->
+    <!--<div class='row'>-->
+        <!--<div class='col-xs-12'>-->
+            <!--<div role='tabpanel'>-->
+                <!--<div class="fs-tab-holder">-->
+                    <!--<ul class='nav nav-tabs' role='tablist' data-role="tabs-list"></ul>-->
+                <!--</div>-->
+                <!--<div class='tab-content' data-role="tabs-content">-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class='row faostat-download-selector-toolbar'>-->
+        <!--<div class='col-xs-4'>-->
+            <!--<input class='form-control' placeholder='{{tree_filter}}' data-role="tree-filter">-->
+        <!--</div>-->
+        <!--<div class='col-xs-4'>-->
+            <!--<button class='btn btn-default btn-sm' type='submit' data-role="deselect-all">-->
+                <!--{{clear_all}}-->
+            <!--</button>-->
+        <!--</div>-->
+        <!--<div class='col-xs-4'>-->
+            <!--<button class='btn btn-default btn-sm' type='submit' data-role="select-all">-->
+                <!--{{select_all}}-->
+            <!--</button>-->
+        <!--</div>-->
+    <!--</div>-->
+    <!--<div class='row'>-->
+        <!--<div class='col-xs-12 faostat-download-selector-resume-holder'>-->
+            <!--<div id='{{summary_id}}' class='faostat-summary-item'>-->
+
+            <!--</div>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</script>-->
+
+
+<script type='text/x-handlebars-template' id='main_structure'>
+
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div role='tabpanel'>
+
+                <div class='row'>
+                    <div class='col-xs-10'>
+                        <div class="fs-tab-holder">
+                            <ul class='nav nav-tabs' role='tablist' data-role="tabs-list"></ul>
+                        </div>
+                    </div>
+                    <div class='col-xs-2'>
+                        {{#if has_coding_systems}}
+                            <div class='btn-group pull-right'>
+
+                                <button type='button' class='btn btn-default btn-xs dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                        <span style='margin-left: -5px;'>
+                                            &nbsp;<i class='fa fa-cog'></i> <span class='caret'></span>
+                                        </span>
+                                </button>
+                                <ul class='dropdown-menu' style='padding-left: 8px; padding-right: 8px;'>
+                                    <li><b>{{conding_system}}Coding System</b></li>
+                                    <li role='separator' class='divider'>
+
+                                    </li>
+                                    {{#each coding_systems}}
+                                        <li>
+                                            <div class='radio'>
+                                                <label>
+                                                    <input type='radio' name='coding_systems{{this.suffix}}' id='{{this.label}}' value='{{this.label}}' {{#if @first}}checked=''{{/if}}>
+                                                    {{this.label}}
+                                                </label>
+                                            </div>
+                                        </li>
+                                    {{/each}}
+                                </ul>
+
+                            </div>
+                        {{/if}}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel-body">
+            <div class='tab-content' data-role="tabs-content">
+        </div>
+
+        <div class="panel-footer">
+
+            <div class="row">
+                <div class='col-xs-5'>
+                    <input class='form-control' placeholder='{{tree_filter}}' data-role="tree-filter">
+                </div>
+
+                {{#if is_multiple_selection}}
+                    <div class='col-xs-7'>
+                        <div class="btn-group">
+                            <button class='btn btn-default btn-sm' type='submit' data-role="deselect-all">
+                                {{clear_all}}
+                            </button>
+                            <button class='btn btn-default btn-sm' type='submit' data-role="select-all">
+                                {{select_all}}
+                            </button>
+                        </div>
+                    </div>
+                {{/if}}
+            </div>
+
+            <div class='row'>
+                <div class='col-xs-12 faostat-download-selector-resume-holder'>
+                    <div class='faostat-summary-item' data-role="summary"></div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</script>
+
+
+<script type='text/x-handlebars-template' id='tab_header_structure'>
+    <li role='presentation'>
+        <a href='#{{id}}' data-tab='{{id}}' aria-controls='{{id}}' role='tab' data-toggle='tab'>
+            {{tab_header_label}}
+        </a>
+    </li>
+</script>
+
+<script type='text/x-handlebars-template' id='tab_content_structure'>
+    <div role='tabpanel' class='tab-pane fade' id='{{id}}' style='height: 150px; width: 100%; overflow-y: auto; overflow-x: hidden;'>
+        <div data-role="tree"></div>
+        <!-- TODO: move style to css -->
+        <!--<div style='height: 150px; width: 100%; overflow-y: auto; overflow-x: hidden;'>asoidjaoisdjoaisjd-->
+        <!--oiajsdoiajsdoiajsd-->
+        <!--pasoidjaoisjdoaijsdoiaj-->
+        <!--aoikjsdpoakpokdas</div>-->
+    </div>
+</script>
+
+<script type='text/x-handlebars-template' id='summary_item'>
+    {{#each items}}
+        <div class='summary-item'
+             data-role='summary-item'
+             data-id='{{id}}'
+             data-code='{{code}}'>
+            {{label}}
+        </div>
+    {{/each}}
+</script>
