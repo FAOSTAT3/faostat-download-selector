@@ -37,7 +37,7 @@ define([
 
             multiple: true
 
-    };
+        };
 
     function Selector() {
 
@@ -92,7 +92,6 @@ define([
             id = Math.random().toString().replace('.', ''),
             codingSystems = this.o.dimension.subdimensions[0].coding_systems;
 
-        log.info('here')
         _.each(codingSystems, function(c) {
             codes.push({
                 id: id,
@@ -140,7 +139,6 @@ define([
             tTabList = Handlebars.compile(htmlTabList),
             htmlTabContent = $(template).filter('#tab_content_structure').html(),
             tTabContent = Handlebars.compile(htmlTabContent),
-            multipleSelection = this.o.multiple,
             tab = new Tab(),
             code = this.o.code,
             o = $.extend({
@@ -159,9 +157,10 @@ define([
             summary: this.summary,
             dimension: dimension,
             code: code,
-            id: id,
-            multiple: multipleSelection
+            id: id
         });
+
+        log.info('Selector.initTab;', o);
 
         // shows the first tab
         this.$TABS_LIST.find('a:first').tab('show');
@@ -171,7 +170,9 @@ define([
 
     Selector.prototype.initSummary = function () {
 
-        var multipleSelection = this.o.multiple;
+        //var multipleSelection = this.o.multiple;
+        // TODO: do it in a more robust way
+        var multipleSelection = (this.o.subdimensions[0].options.select === 'multi');
 
         this.summary = new Summary();
         this.summary.init({
