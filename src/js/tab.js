@@ -69,7 +69,8 @@ define([
 
         var id = this.o.dimension.id,
             domain_code = this.o.code,
-            report_code = (this.o.dimension.report_code)? this.o.dimension.report_code: null,
+            // TODO: report_code should came from the dimension API?
+            report_code = this.o.report_code || null,
             self = this;
 
         // retrieve all codes for the subdimension

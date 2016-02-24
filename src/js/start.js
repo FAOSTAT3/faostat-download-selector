@@ -141,6 +141,7 @@ define([
             tTabContent = Handlebars.compile(htmlTabContent),
             tab = new Tab(),
             code = this.o.code,
+            report_code = this.o.report_code,
             o = $.extend({
                id: id,
                tab_header_label: dimension.label
@@ -157,6 +158,8 @@ define([
             summary: this.summary,
             dimension: dimension,
             code: code,
+            // TODO: report_code should came from the dimension API?
+            report_code: report_code,
             id: id
         });
 
