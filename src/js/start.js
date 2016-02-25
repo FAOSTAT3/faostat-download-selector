@@ -175,7 +175,9 @@ define([
 
         //var multipleSelection = this.o.multiple;
         // TODO: do it in a more robust way
-        var multipleSelection = (this.o.subdimensions[0].options.select === 'multi');
+        var multipleSelection = (this.o.subdimensions[0].options.selectType === 'multi');
+
+        log.info("Selector.initSummary;", this.o);
 
         this.summary = new Summary();
         this.summary.init({

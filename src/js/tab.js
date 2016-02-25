@@ -109,7 +109,7 @@ define([
         var data = this.prepareTreeData(d),
             //multiple = this.o.multiple,
             // TODO: make it nicer and robust
-            multiple = (this.o.dimension.options.select === 'multi'),
+            multiple = (this.o.dimension.options.selectType === 'multi'),
             self = this;
 
         /* Init JSTree. */
