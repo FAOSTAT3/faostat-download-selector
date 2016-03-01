@@ -11,8 +11,9 @@ define([
     // Add selector
     'jstree',
     'underscore',
+    'underscore.string',
     'amplify'
-], function ($, log, C, E, Common, template, FAOSTATAPIClient, Tree, _) {
+], function ($, log, C, E, Common, template, FAOSTATAPIClient, Tree, _, _s) {
 
     'use strict';
 
@@ -161,7 +162,7 @@ define([
                 id: v.code + '_' + v.aggregate_type,
                 text: v.label,
                 li_attr: {
-                    code: (v.aggregate_type === '>')? v.code + v.aggregate_type: v.code,
+                    code: (v.aggregate_type === '>' && !_.include(v.code, ">"))? v.code + v.aggregate_type: v.code,
                     label: v.label
                 }
 
