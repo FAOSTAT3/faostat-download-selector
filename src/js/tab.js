@@ -106,11 +106,14 @@ define([
     Tab.prototype.initTree = function (d) {
 
         log.info("Tab.initTree; ", this.o);
+        log.info("Tab.initTree; ", d.data);
 
         var data = this.prepareTreeData(d),
             //multiple = this.o.multiple,
             // TODO: make it nicer and robust
             multiple = (this.o.dimension.options.selectType === 'multi'),
+            // in case is it a single node it will be selected automatically if the tab is visible
+            isSingleNode = d.data.length === 1? true: false,
             self = this;
 
         /* Init JSTree. */
@@ -147,10 +150,14 @@ define([
 
         });
 
-         this.$TREE.on('ready.jstree', function (e) {
+         this.$TREE.on('ready.jstree', function (e, data) {
 
-        });
+             // in case is it a single node it will be selected automatically if the tab is visible
+             if(self.$TREE.is(":visible") && isSingleNode) {
+                self.$TREE.jstree('select_node', 'ul > li:first');
+             }
 
+         });
     };
 
     Tab.prototype.prepareTreeData = function (d) {
