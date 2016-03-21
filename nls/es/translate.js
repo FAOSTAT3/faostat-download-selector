@@ -1,3 +1,4 @@
+/*global define*/
 define({
     go_to: 'Ir...',
     select_all: 'Seleccionar Todo',

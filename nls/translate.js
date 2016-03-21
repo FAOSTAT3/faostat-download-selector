@@ -1,3 +1,4 @@
+/*global define*/
 define({
     root : {
         tree_filter: 'Filter...',
