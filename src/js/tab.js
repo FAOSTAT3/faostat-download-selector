@@ -106,7 +106,7 @@ define([
     Tab.prototype.initTree = function (d) {
 
         log.info("Tab.initTree; ", this.o);
-        log.info("Tab.initTree; ", d.data);
+        //log.info("Tab.initTree; ", d.data);
 
         var data = this.prepareTreeData(d),
             //multiple = this.o.multiple,
