@@ -295,8 +295,13 @@ define([
 
     Selector.prototype.unbindEventListeners = function () {
 
-        this.$SELECT_ALL.off('click');
-        this.$DESELECT_ALL.off('click');
+        if( this.$SELECT_ALL) {
+            this.$SELECT_ALL.off('click');
+        }
+
+        if (this.$DESELECT_ALL) {
+            this.$DESELECT_ALL.off('click');
+        }
 
     };
 
