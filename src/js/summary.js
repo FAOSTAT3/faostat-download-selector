@@ -1,12 +1,12 @@
 /*global define, amplify*/
-/*jslint nomen: true*/
 define([
     'jquery',
     'loglevel',
     'config/Events',
     'text!fs-s/html/templates.hbs',
     'handlebars',
-    'underscore'
+    'underscore',
+    'amplify'
 ], function ($, log, E, template, Handlebars, _) {
 
     'use strict';
@@ -66,7 +66,7 @@ define([
         this.$CONTAINER.html(t({items: this.selections}));
 
         this.bindEventListeners();
-
+        
         amplify.publish(E.DOWNLOAD_SELECTION_CHANGE);
 
     };
@@ -140,6 +140,7 @@ define([
 
         var self = this;
 
+        this.$CONTAINER.find(s.SUMMARY_ITEM).off('click');
         this.$CONTAINER.find(s.SUMMARY_ITEM).on('click', function(e) {
 
             var id = $(e.target).data('id');

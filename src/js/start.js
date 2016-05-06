@@ -300,11 +300,31 @@ define([
 
     };
 
+    Selector.prototype.destroyTabs = function() {
+
+        _.each(this.tabs, function(tab) {
+
+            tab.destroy();
+
+        });
+
+    };
+
+    Selector.prototype.destroySummary = function() {
+
+        this.summary.destroy();
+
+    };
+
     Selector.prototype.destroy = function () {
 
         log.info('Selector.destroy;');
 
         this.unbindEventListeners();
+
+        this.destroyTabs();
+
+        this.destroySummary();
 
         // remove summary and tabs
 
