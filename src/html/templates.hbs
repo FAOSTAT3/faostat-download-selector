@@ -15,10 +15,9 @@
                         {{#if coding_systems}}
                             <div class='btn-group pull-right'>
 
-                                <button type='button' class='btn btn-default btn-xs dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                        <span style='margin-left: -5px;'>
-                                            &nbsp;<i class='fa fa-cog'></i> <span class='caret'></span>
-                                        </span>
+                                <button type='button' class='btn btn-link btn-xs dropdown-toggle' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                    <i class="material-icons">settings</i>
+                                    <span class='caret'></span>
                                 </button>
                                 <ul class='dropdown-menu' style='padding-left: 8px; padding-right: 8px;'>
                                     <li><b>{{conding_system}}Coding System</b></li>
@@ -44,7 +43,7 @@
         </div>
 
         <div class="panel-body">
-            <div class='tab-content' data-role="tabs-content">
+            <div class='tab-content fs-download-selector-panel' data-role="tabs-content">
         </div>
 
         <div class="panel-footer">
@@ -57,10 +56,10 @@
                 {{#if is_multiple_selection}}
                     <div class='col-xs-7'>
                         <div class="btn-group">
-                            <button class='btn btn-default btn-sm' type='submit' data-role="select-all">
+                            <button class='btn  btn-sm btn-link' type='submit' data-role="select-all">
                                 {{select_all}}
                             </button>
-                            <button class='btn btn-default btn-sm' type='submit' data-role="deselect-all">
+                            <button class='btn  btn-sm btn-link' type='submit' data-role="deselect-all">
                                 {{clear_all}}
                             </button>
                         </div>
