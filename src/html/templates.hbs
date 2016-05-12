@@ -43,24 +43,22 @@
         </div>
 
         <div class="panel-body">
+            <input class='form-control fs-download-selector-filter' placeholder='{{tree_filter}}' data-role="tree-filter">
             <div class='tab-content fs-download-selector-panel' data-role="tabs-content"></div>
         </div>
 
         <div class="panel-footer">
 
             <div class="row">
-                <div class='col-xs-5'>
-                    <input class='form-control' placeholder='{{tree_filter}}' data-role="tree-filter">
-                </div>
 
                 {{#if is_multiple_selection}}
-                    <div class='col-xs-7'>
+                    <div class='col-xs-12'>
                         <div class="btn-group">
-                            <button class='btn  btn-sm btn-link' type='submit' data-role="select-all">
-                                {{select_all}}
-                            </button>
                             <button class='btn  btn-sm btn-link' type='submit' data-role="deselect-all">
                                 {{clear_all}}
+                            </button>
+                            <button class='btn  btn-sm btn-link' type='submit' data-role="select-all">
+                                {{select_all}}
                             </button>
                         </div>
                     </div>
@@ -100,7 +98,7 @@
 
 <script type='text/x-handlebars-template' id='summary_item'>
     {{#each items}}
-        <div class='summary-item'
+        <div class='summary-item hoverable'
              data-role='summary-item'
              data-id='{{id}}'
              data-code='{{code}}'>

@@ -19,7 +19,7 @@ define([
 
         defaultOptions = {
 
-            onRemove: 'callbak',
+            onRemove: 'callback',
 
             // validate if there is at least one selection
             validateEmptySelection: true,
