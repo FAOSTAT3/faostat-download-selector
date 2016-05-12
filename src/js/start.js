@@ -303,6 +303,10 @@ define([
             this.$DESELECT_ALL.off('click');
         }
 
+        if (this.$CODING_SYSTEMS) {
+            this.$CODING_SYSTEMS.off('click');
+        }
+
     };
 
     Selector.prototype.destroyTabs = function() {
