@@ -25,12 +25,9 @@
 
                                     </li>
                                     {{#each coding_systems}}
-                                        <li>
-                                            <div class='radio' data-role="coding-systems">
-                                                <label>
-                                                    <input type='radio' name='coding_system_{{this.id}}' value='{{this.code}}' {{#if @first}}checked='checked'{{/if}}>{{this.label}}
-                                                </label>
-                                            </div>
+                                        <li data-role="coding-systems">
+                                            <input type='radio' id='coding_system_{{this.id}}_{{this.code}}' name='coding_system_{{this.id}}' value='{{this.code}}' {{#if @first}}checked='checked'{{/if}}>
+                                            <label for="coding_system_{{this.id}}_{{this.code}}">{{this.label}}</label>
                                         </li>
                                     {{/each}}
                                 </ul>
@@ -43,7 +40,8 @@
         </div>
 
         <div class="panel-body">
-            <input class='form-control fs-download-selector-filter' placeholder='{{tree_filter}}' data-role="tree-filter">
+            <input class='form-control fs-download-selector-filter' data-role="tree-filter"
+                   placeholder='{{tree_filter}}'>
             <div class='tab-content fs-download-selector-panel' data-role="tabs-content"></div>
         </div>
 
@@ -54,11 +52,11 @@
                 {{#if is_multiple_selection}}
                     <div class='col-xs-12'>
                         <div class="btn-group">
-                            <button class='btn  btn-sm btn-link' type='submit' data-role="deselect-all">
-                                {{clear_all}}
-                            </button>
                             <button class='btn  btn-sm btn-link' type='submit' data-role="select-all">
                                 {{select_all}}
+                            </button>
+                            <button class='btn  btn-sm btn-link' type='submit' data-role="deselect-all">
+                                {{clear_all}}
                             </button>
                         </div>
                     </div>
@@ -98,7 +96,7 @@
 
 <script type='text/x-handlebars-template' id='summary_item'>
     {{#each items}}
-        <div class='summary-item hoverable'
+        <div class='summary-item'
              data-role='summary-item'
              data-id='{{id}}'
              data-code='{{code}}'>
