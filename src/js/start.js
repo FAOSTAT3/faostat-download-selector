@@ -171,7 +171,7 @@ define([
         var label = tab.getFirstValue() || "";
 
         if ( label !== undefined ) {
-            this.$TREE_FILTER.attr("placeholder", i18nLabels.filter_results + label.toLowerCase());
+            this.$TREE_FILTER.attr("placeholder", i18nLabels.filter_results + ' ' + label.toLowerCase());
         }
 
     };
