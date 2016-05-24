@@ -247,9 +247,9 @@ define([
     };
 
     Tab.prototype.getFirstValue = function () {
-
+        
         if (this.cache !== undefined && this.cache.hasOwnProperty('data')) {
-            if ( this.cache.data.length > 0 ) {
+            if ( this.cache.data[0] !== undefined ) {
                 return this.cache.data[0].label;
             }
         }

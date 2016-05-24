@@ -168,10 +168,10 @@ define([
 
     Selector.prototype.filterPlaceholder = function (tab) {
 
-        var label = tab.getFirstValue();
+        var label = tab.getFirstValue() || "";
 
         if ( label !== undefined ) {
-            this.$TREE_FILTER.attr("placeholder", i18nLabels.filter_results + tab.getFirstValue().toLowerCase());
+            this.$TREE_FILTER.attr("placeholder", i18nLabels.filter_results + label.toLowerCase());
         }
 
     };
