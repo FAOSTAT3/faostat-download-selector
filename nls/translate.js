@@ -5,7 +5,8 @@ define({
         select_all: 'Select All',
         clear_all: 'Clear All',
         summary: 'Summary',
-        click_to_remove: 'Click to remove this item from selection.'
+        filter_results: 'Filter results e.g.',
+        please_make_one_selection: '*Please make at least one selection'
     },
     fr : true,
     es : true

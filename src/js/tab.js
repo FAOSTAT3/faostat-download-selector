@@ -25,17 +25,17 @@ define([
 
         defaultOptions = {
 
-        // coding system
+            // coding system
 
-        // summary
+            // summary
 
-        // tabs
+            // tabs
 
-        // each tab
+            // each tab
 
-        // single or multiple selection tree
+            // single or multiple selection tree
 
-    };
+        };
 
     function Tab() {
 
@@ -48,6 +48,7 @@ define([
         this.o = $.extend(true, {}, defaultOptions, config);
         this.api = new FAOSTATAPIClient();
         this.summary = this.o.summary;
+        this.cache = {};
 
         log.info('Tab.init;', this.o);
 
@@ -93,7 +94,7 @@ define([
                 self.initTree(d);
             }
             else {
-                // TODO: make it nice
+                // TODO: make it multilingual and nicer
                 self.$TREE.html('<h5 style="text-align: center;">No selection available</h5>');
             }
 
@@ -108,11 +109,13 @@ define([
         log.info("Tab.initTree; ", this.o);
         //log.info("Tab.initTree; ", d.data);
 
+        this.cache.data = $.extend(true, {}, d.data);
+
         var data = this.prepareTreeData(d),
-            //multiple = this.o.multiple,
-            // TODO: make it nicer and robust
+        //multiple = this.o.multiple,
+        // TODO: make it nicer and robust
             multiple = (this.o.dimension.options.selectType === 'multi'),
-            // in case is it a single node it will be selected automatically if the tab is visible
+        // in case is it a single node it will be selected automatically if the tab is visible
             isSingleNode = d.data.length === 1? true: false,
             self = this;
 
@@ -150,14 +153,20 @@ define([
 
         });
 
-         this.$TREE.on('ready.jstree', function (e, data) {
+        this.$TREE.on('ready.jstree', function (e, data) {
 
-             // in case is it a single node it will be selected automatically if the tab is visible
-             if(self.$TREE.is(":visible") && isSingleNode) {
+            // in case is it a single node it will be selected automatically if the tab is visible
+            if(self.$TREE.is(":visible") && isSingleNode) {
                 self.$TREE.jstree('select_node', 'ul > li:first');
-             }
+            }
 
-         });
+            // callback
+            if(self.o.callback !== undefined && _.isFunction(self.o.callback)) {
+                self.o.callback(self);
+            }
+
+        });
+
     };
 
     Tab.prototype.prepareTreeData = function (d) {
@@ -181,9 +190,9 @@ define([
 
     Tab.prototype.refreshSummary = function () {
 
-       var selected = this.$TREE.jstree("get_selected"),
-           self = this,
-           values = [];
+        var selected = this.$TREE.jstree("get_selected"),
+            self = this,
+            values = [];
 
         _.each(selected, function(s) {
 
@@ -219,9 +228,9 @@ define([
 
     Tab.prototype.deselect = function (item) {
 
-       log.info("Tab.deselect; item:", item);
+        log.info("Tab.deselect; item:", item);
 
-       this.$TREE.jstree("uncheck_node", item.id);
+        this.$TREE.jstree("uncheck_node", item.id);
 
     };
 
@@ -234,6 +243,16 @@ define([
     Tab.prototype.search = function (word) {
 
         this.$TREE.jstree(true).search(word);
+
+    };
+
+    Tab.prototype.getFirstValue = function () {
+
+        if (this.cache !== undefined && this.cache.hasOwnProperty('data')) {
+            if ( this.cache.data.length > 0 ) {
+                return this.cache.data[0].label;
+            }
+        }
 
     };
 

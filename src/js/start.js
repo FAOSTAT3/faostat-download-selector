@@ -103,12 +103,6 @@ define([
         return codes.length > 0? codes : null;
      };
 
-    Selector.prototype.createTab = function (subdimension) {
-
-        log.info("Selector.createTab; ", subdimension);
-
-    };
-
     Selector.prototype.initComponents = function () {
 
         var subdimensions = this.o.subdimensions,
@@ -132,7 +126,7 @@ define([
 
     Selector.prototype.initTab = function (dimension, index) {
 
-        log.info('Selector.initTab;', dimension);
+        log.info('Selector.initTab;', dimension, index);
 
         var id = 'tab_' + Math.random().toString().replace('.', ''),
             htmlTabList = $(template).filter('#tab_header_structure').html(),
@@ -160,7 +154,8 @@ define([
             code: code,
             // TODO: report_code should came from the dimension API?
             report_code: report_code,
-            id: id
+            id: id,
+            callback: (index === 0)? _.bind(this.filterPlaceholder, this) : null
         });
 
         log.info('Selector.initTab;', o);
@@ -169,6 +164,16 @@ define([
         this.$TABS_LIST.find('a:first').tab('show');
 
         return tab;
+    };
+
+    Selector.prototype.filterPlaceholder = function (tab) {
+
+        var label = tab.getFirstValue();
+
+        if ( label !== undefined ) {
+            this.$TREE_FILTER.attr("placeholder", i18nLabels.filter_results + tab.getFirstValue().toLowerCase());
+        }
+
     };
 
     Selector.prototype.initSummary = function () {
