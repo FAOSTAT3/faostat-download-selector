@@ -72,8 +72,6 @@ define([
                 coding_systems: coding_systems
             });
 
-        log.info(i18nLabels);
-
         // init structure
         this.$CONTAINER.html(t(options));
 

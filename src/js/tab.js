@@ -160,6 +160,9 @@ define([
                 self.$TREE.jstree('select_node', 'ul > li:first');
             }
 
+            // refresh summary
+            self.refreshSummary();
+
             // callback
             if(self.o.callback !== undefined && _.isFunction(self.o.callback)) {
                 self.o.callback(self);
@@ -174,14 +177,22 @@ define([
         var data = [];
 
         _.each(d.data, function(v) {
-            data.push({
-                id: v.code + '_' + v.aggregate_type,
-                text: v.label,
-                li_attr: {
-                    code: (v.aggregate_type === '>' && !_.include(v.code, ">"))? v.code + v.aggregate_type: v.code,
-                    label: v.label
-                }
 
+            var id = v.code + '_' + v.aggregate_type,
+                // fix for DB aggregation type missing fix
+                code = (v.aggregate_type === '>' && !_.include(v.code, ">"))? v.code + v.aggregate_type: v.code,
+                label = v.label;
+
+            data.push({
+                id: id,
+                text: label,
+                li_attr: {
+                    code: code,
+                    label: label
+                },
+                state: {
+                    //selected: true  // is the node selected
+                }
             });
         });
 
