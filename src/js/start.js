@@ -106,6 +106,7 @@ define([
         var subdimensions = this.o.subdimensions,
             self = this;
 
+        // TODO: refactor with listeners instead of direct dependecy
         this.summary = this.initSummary();
         this.tabs = {};
 
@@ -116,6 +117,8 @@ define([
             self.tabs[tab.getID()] = tab;
 
         });
+
+        this.summary.addTabs(this.tabs);
 
         // enable tree filter
         this.enableTreeFilter();
@@ -269,6 +272,7 @@ define([
         // TODO: change with API giving the right parameter to use
         if (codingSystem !== undefined && codingSystem !== null ) {
             var index = parameter.match(/\d+/)[0];
+            // TODO: change it with the right API
             obj.request['List'+ index +'AltCodes'] = codingSystem;
         }
 

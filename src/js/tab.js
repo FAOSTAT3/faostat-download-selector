@@ -143,13 +143,15 @@ define([
         // Binding on node selection
         this.$TREE.on('select_node.jstree', function (e, data) {
 
-            self.summary.add([data.node.li_attr]);
+            self.refreshSummary();
+            //self.summary.add([data.node.li_attr]);
 
         });
 
         this.$TREE.on('deselect_node.jstree', function (e, data) {
 
-            self.summary.remove(data.node.li_attr);
+            self.refreshSummary();
+           //self.summary.remove(data.node.li_attr);
 
         });
 
@@ -173,6 +175,92 @@ define([
     };
 
     Tab.prototype.prepareTreeData = function (d) {
+
+        var data = [],
+            self = this;
+
+        _.each(d.data, function(v) {
+
+            var id = v.code,
+                code =  v.code,
+                label = v.label,
+                parent = self.prepareTreeNodeParent(v, d.data),
+                node = {
+                    id: id,
+                    text: label,
+                    parent: parent,
+                    li_attr: {
+                        code: code,
+                        label: label
+                    },
+                    state: {
+                        //selected: true  // is the node selected
+                    }
+                };
+
+            data.push(node);
+
+        });
+
+        if (this.o.dimension.id === 'analyticalagg') {
+            log.info("data---------", data);
+        }
+
+        return data;
+    };
+
+    Tab.prototype.prepareTreeNodeParent = function (v, data) {
+
+        var id = v.parent? v.parent: undefined;
+
+        if(id === undefined) {
+            log.info("Tab.prepareTreeNodeParent;undefined;", id, v)
+            return "#";
+        }
+
+        log.info("Tab.prepareTreeNodeParent;", id);
+        if (id === '0') {
+            return '#';
+        }
+
+        for(var i=0; i < data.length; i++) {
+            log.info("Tab.prepareTreeNodeParent;check;", data[i].code, id, data[i].code === id);
+            if (data[i].code === id) {
+                return id;
+            }
+        }
+
+        // return null or "#"? (not in hierarchy?)
+        return '#';
+
+    };
+
+    Tab.prototype.prepareTreeNode = function (v) {
+
+        var id = v.code,
+            // fix for DB aggregation type missing fix
+            code = (v.aggregate_type === '>' && !_.include(v.code, ">"))? v.code + v.aggregate_type: v.code,
+            label = v.label,
+            //parent = v.parent === '0'? '#' : v.parent,
+            d = {
+                id: id,
+                text: label,
+                //parent: v.parent,
+                parent: '#',
+                li_attr: {
+                    code: code,
+                    label: label
+                },
+                state: {
+                    //selected: true  // is the node selected
+                }
+            };
+
+        return d;
+
+    };
+
+    Tab.prototype.prepareTreeData_backup = function (d) {
 
         var data = [];
 
@@ -201,7 +289,7 @@ define([
 
     Tab.prototype.refreshSummary = function () {
 
-        var selected = this.$TREE.jstree("get_selected"),
+        /*var selected = this.$TREE.jstree("get_selected"),
             self = this,
             values = [];
 
@@ -213,7 +301,9 @@ define([
 
         });
 
-        this.summary.add(values);
+        this.summary.add(values);*/
+
+        this.summary.refresh();
 
     };
 
@@ -229,11 +319,15 @@ define([
 
         this.$TREE.jstree("uncheck_all");
 
+        this.refreshSummary();
+
     };
 
     Tab.prototype.select = function (item) {
 
         //this.$TREE.jstree("check_node", value.id);
+
+        this.refreshSummary();
 
     };
 
@@ -242,6 +336,8 @@ define([
         log.info("Tab.deselect; item:", item);
 
         this.$TREE.jstree("uncheck_node", item.id);
+
+        this.refreshSummary();
 
     };
 
@@ -264,6 +360,24 @@ define([
                 return this.cache.data[0].label;
             }
         }
+
+    };
+
+    Tab.prototype.getSelected = function () {
+
+        var selected = this.$TREE.jstree("get_selected"),
+            self = this,
+            values = [];
+
+        _.each(selected, function(s) {
+
+            var node = self.$TREE.jstree(true).get_node(s);
+
+            values.push(node.li_attr);
+
+        });
+
+        return values;
 
     };
 

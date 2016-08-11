@@ -58,6 +58,29 @@ define([
 
     };
 
+    Summary.prototype.refresh = function () {
+
+        var self = this;
+        this.selections = [];
+
+        _.each(this.tabs, function(tab) {
+
+            var values = tab.getSelected();
+
+            _.each(values, function(v) {
+                self.selections.push(v);
+            });
+
+            //self.selections = _.union(self.selections, tab.getSelected());
+
+        });
+
+        log.info(self.selections);
+
+        this.render();
+
+    };
+
     Summary.prototype.render = function () {
 
         var html = $(template).filter('#summary_item').html(),
@@ -66,14 +89,27 @@ define([
         this.$CONTAINER.html(t({items: this.selections}));
 
         this.bindEventListeners();
-        
+
+        amplify.publish(E.DOWNLOAD_SELECTION_CHANGE);
+
+    };
+
+    Summary.prototype.renderBK = function () {
+
+        var html = $(template).filter('#summary_item').html(),
+            t = Handlebars.compile(html);
+
+        this.$CONTAINER.html(t({items: this.selections}));
+
+        this.bindEventListeners();
+
         amplify.publish(E.DOWNLOAD_SELECTION_CHANGE);
 
     };
 
     Summary.prototype.add = function (items) {
 
-        var self = this;
+       /* var self = this;
 
         // if single selection enabled, reset selections
         if ( this.o.multiple === false) {
@@ -84,25 +120,25 @@ define([
             self.selections[v.id] = v;
         });
 
-        this.render();
+        this.render();*/
 
     };
 
     Summary.prototype.remove = function (item) {
 
-        log.info('Summary.remove;', item);
+       /* log.info('Summary.remove;', item);
 
         delete this.selections[item.id];
 
         this.render();
 
-        this.o.onRemove(item);
+        this.o.onRemove(item);*/
 
     };
 
     Summary.prototype.deselectAll = function () {
 
-        this.selections = {};
+        this.selections = [];
 
         this.render();
 
@@ -137,6 +173,12 @@ define([
 
     };
 
+    Summary.prototype.addTabs = function (tabs) {
+
+        this.tabs = tabs;
+
+    };
+
     Summary.prototype.bindEventListeners = function () {
 
         var self = this;
@@ -155,7 +197,6 @@ define([
         });
 
     };
-
 
     Summary.prototype.unbindEventListeners = function () {
 
