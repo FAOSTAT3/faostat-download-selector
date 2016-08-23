@@ -9,13 +9,12 @@ define([
     'i18n!fs-s/nls/translate',
     'fs-s/tab',
     'fs-s/summary',
-    'faostatapiclient',
     'handlebars',
     'underscore',
     // Add selector
     'bootstrap',
     'amplify'
-], function ($, log, E, Common, template, i18nLabels, Tab, Summary, FAOSTATAPIClient, Handlebars, _) {
+], function ($, log, E, Common, template, i18nLabels, Tab, Summary, Handlebars, _) {
 
     'use strict';
 
@@ -48,7 +47,6 @@ define([
     Selector.prototype.init = function (config) {
 
         this.o = $.extend(true, {}, defaultOptions, config);
-        this.api = new FAOSTATAPIClient();
 
         log.info('Selector.init;', this.o);
 
@@ -84,6 +82,7 @@ define([
         this.$CODING_SYSTEMS = this.$CONTAINER.find(s.CODING_SYSTEMS);
 
     };
+
     Selector.prototype.getCodingSystems = function() {
 
         var codes = [],

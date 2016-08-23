@@ -156,7 +156,6 @@ define([
 
     };
 
-
     Summary.prototype.unbindEventListeners = function () {
 
         this.$CONTAINER.find(s.SUMMARY_ITEM).off('click');

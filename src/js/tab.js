@@ -3,9 +3,6 @@
 define([
     'jquery',
     'loglevel',
-    'config/Config',
-    'config/Events',
-    'globals/Common',
     'text!fs-s/html/templates.hbs',
     'faostatapiclient',
     // Add selector
@@ -13,7 +10,7 @@ define([
     'underscore',
     'underscore.string',
     'amplify'
-], function ($, log, C, E, Common, template, FAOSTATAPIClient, Tree, _, _s) {
+], function ($, log, template, API, Tree, _, _s) {
 
     'use strict';
 
@@ -46,7 +43,6 @@ define([
     Tab.prototype.init = function (config) {
 
         this.o = $.extend(true, {}, defaultOptions, config);
-        this.api = new FAOSTATAPIClient();
         this.summary = this.o.summary;
         this.cache = {};
 
@@ -76,9 +72,7 @@ define([
             self = this;
 
         // retrieve all codes for the subdimension
-        this.api.codes({
-            datasource: C.DATASOURCE,
-            lang: Common.getLocale(),
+        API.codes({
             id: id,
             domain_code: domain_code,
             report_code: report_code,
