@@ -38,7 +38,7 @@ define([
 
         this.o = $.extend(true, {}, defaultOptions, config);
 
-        log.info('Summary.init;', this.o);
+        //log.info('Summary.init;', this.o);
 
         this.initVariables();
         this.initComponents();
@@ -90,7 +90,7 @@ define([
 
     Summary.prototype.remove = function (item) {
 
-        log.info('Summary.remove;', item);
+        //log.info('Summary.remove;', item);
 
         delete this.selections[item.id];
 
@@ -113,7 +113,7 @@ define([
         var codes = [],
             self = this;
 
-        log.info('Summary.getSelections; this.selections.length:', this.selections.length);
+        //log.info('Summary.getSelections; this.selections.length:', this.selections.length);
 
         if ( !_.isEmpty(this.selections)) {
             _.each(Object.keys(this.selections), function(id) {
@@ -131,7 +131,7 @@ define([
             }
         }
 
-        log.info('Summary.getSelections; codes:', codes);
+        //log.info('Summary.getSelections; codes:', codes);
 
         return codes;
 

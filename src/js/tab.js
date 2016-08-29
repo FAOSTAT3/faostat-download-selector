@@ -46,7 +46,7 @@ define([
         this.summary = this.o.summary;
         this.cache = {};
 
-        log.info('Tab.init;', this.o);
+        //log.info('Tab.init;', this.o);
 
         this.initVariables();
         this.initComponents();
@@ -55,7 +55,7 @@ define([
 
     Tab.prototype.initVariables = function () {
 
-        log.info('Tab.initVariables;', this.o);
+        //log.info('Tab.initVariables;', this.o);
 
         this.$CONTAINER = $(this.o.container);
 
@@ -76,12 +76,7 @@ define([
             id: id,
             domain_code: domain_code,
             report_code: report_code,
-            // TODO: this should be optional
-            whitelist: [],
-            blacklist: [],
-            subcodelists: null,
-            show_lists: true,
-            ord: null
+            show_lists: true
         }).then(function(d) {
 
             if (d.data.length > 0) {
@@ -92,15 +87,13 @@ define([
                 self.$TREE.html('<h5 style="text-align: center;">No selection available</h5>');
             }
 
-            //self.initTree(d);
-
         });
 
     };
 
     Tab.prototype.initTree = function (d) {
 
-        log.info("Tab.initTree; ", this.o);
+        //log.info("Tab.initTree; ", this.o);
         //log.info("Tab.initTree; ", d.data);
 
         this.cache.data = $.extend(true, {}, d.data);

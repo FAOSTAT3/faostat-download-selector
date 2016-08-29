@@ -48,7 +48,7 @@ define([
 
         this.o = $.extend(true, {}, defaultOptions, config);
 
-        log.info('Selector.init;', this.o);
+        //log.info('Selector.init;', this.o);
 
         this.initVariables();
         this.initComponents();
@@ -123,7 +123,7 @@ define([
 
     Selector.prototype.initTab = function (dimension, index) {
 
-        log.info('Selector.initTab;', dimension, index);
+        //log.info('Selector.initTab;', dimension, index);
 
         var id = 'tab_' + Math.random().toString().replace('.', ''),
             htmlTabList = $(template).filter('#tab_header_structure').html(),
@@ -155,7 +155,7 @@ define([
             callback: (index === 0)? _.bind(this.filterPlaceholder, this) : null
         });
 
-        log.info('Selector.initTab;', o);
+        //log.info('Selector.initTab;', o);
 
         // shows the first tab
         this.$TABS_LIST.find('a:first').tab('show');
@@ -179,7 +179,7 @@ define([
         // TODO: do it in a more robust way
         var multipleSelection = (this.o.subdimensions[0].options.selectType === 'multi');
 
-        log.info("Selector.initSummary;", this.o);
+        //log.info("Selector.initSummary;", this.o);
 
         this.summary = new Summary();
         this.summary.init({
@@ -208,7 +208,7 @@ define([
 
     Selector.prototype.deselectItem = function(item) {
 
-        log.info("Selector.deselectItem; item:", item);
+        //log.info("Selector.deselectItem; item:", item);
 
         for(var key in this.tabs) {
             this.tabs[key].deselect(item);
@@ -271,7 +271,7 @@ define([
             obj.request['List'+ index +'AltCodes'] = codingSystem;
         }
 
-        log.info('Selector.getSelections', obj);
+        // log.info('Selector.getSelections', obj);
 
         return obj;
 
