@@ -124,6 +124,7 @@ define([
             },
 
             'search': {
+                'fuzzy': false,
                 'show_only_matches': true,
                 'close_opened_onclear': false
             }
