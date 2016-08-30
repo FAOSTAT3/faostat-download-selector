@@ -3,6 +3,7 @@
 define([
     'jquery',
     'loglevel',
+    'config/Events',
     'text!fs-s/html/templates.hbs',
     'faostatapiclient',
     // Add selector
@@ -10,7 +11,7 @@ define([
     'underscore',
     'underscore.string',
     'amplify'
-], function ($, log, template, API, Tree, _, _s) {
+], function ($, log, E, template, API, Tree, _, _s) {
 
     'use strict';
 
@@ -60,6 +61,8 @@ define([
         this.$CONTAINER = $(this.o.container);
 
         this.$TREE = this.$CONTAINER.find(s.TREE);
+
+        amplify.publish(E.LOADING_SHOW, { container: this.$TREE });
 
     };
 
