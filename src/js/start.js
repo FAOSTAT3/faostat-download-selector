@@ -249,27 +249,24 @@ define([
             parameter = this.o.parameter,
             id = this.o.id,
             request = {},
+            requestReportTable = {},
             obj = {};
 
-        // TODO: in case of switching to databean, replace request[this.o.parameter] with request.filter;
-
-        //request[this.o.parameter] = codes;
-        request[this.o.id] = codes;
-
-        // TODO: coding systems
-        //request[this.o.parameter] = codes;
+        // codes
+        request[id] = codes;
+        requestReportTable[parameter] = codes;
 
         obj = {
             id: id,
             paramenter: parameter,
             codes: codes,
-            request: request
+            request: request,
+            requestReportTable: requestReportTable
         };
 
-        // TODO: change with API giving the right parameter to use
+        // TODO: change API giving the right parameter to use for the Coding Systems
         if (codingSystem !== undefined && codingSystem !== null ) {
             var index = parameter.match(/\d+/)[0];
-            //obj.request['List'+ index +'AltCodes'] = codingSystem;
             obj.request[id + '_alt_cs'] = codingSystem;
         }
 
