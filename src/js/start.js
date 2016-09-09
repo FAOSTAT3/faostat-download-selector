@@ -253,7 +253,8 @@ define([
 
         // TODO: in case of switching to databean, replace request[this.o.parameter] with request.filter;
 
-        request[this.o.parameter] = codes;
+        //request[this.o.parameter] = codes;
+        request[this.o.id] = codes;
 
         // TODO: coding systems
         //request[this.o.parameter] = codes;
@@ -268,10 +269,11 @@ define([
         // TODO: change with API giving the right parameter to use
         if (codingSystem !== undefined && codingSystem !== null ) {
             var index = parameter.match(/\d+/)[0];
-            obj.request['List'+ index +'AltCodes'] = codingSystem;
+            //obj.request['List'+ index +'AltCodes'] = codingSystem;
+            obj.request[id + '_alt_cs'] = codingSystem;
         }
 
-        // log.info('Selector.getSelections', obj);
+        log.info('Selector.getSelections', obj);
 
         return obj;
 

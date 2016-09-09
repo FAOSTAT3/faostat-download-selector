@@ -14,24 +14,24 @@
                     <div class='col-xs-2'>
                         {{#if coding_systems}}
                             <div class='btn-group pull-right'>
-
-                                <button type='button' class='btn btn-link btn-xs dropdown-toggle waves-effect' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
-                                    <i class="material-icons">settings</i>
-                                    <span class='caret'></span>
-                                </button>
-                                <ul class='dropdown-menu' style='padding-left: 8px; padding-right: 8px;'>
-                                    <li><b>{{conding_system}}Coding System</b></li>
-                                    <li role='separator' class='divider'>
-
-                                    </li>
-                                    {{#each coding_systems}}
-                                        <li data-role="coding-systems">
-                                            <input type='radio' id='coding_system_{{this.id}}_{{this.code}}' name='coding_system_{{this.id}}' value='{{this.code}}' {{#if @first}}checked='checked'{{/if}}>
-                                            <label for="coding_system_{{this.id}}_{{this.code}}">{{this.label}}</label>
-                                        </li>
-                                    {{/each}}
-                                </ul>
-
+                                <div class="pull-right flip dropdown">
+                                    <button type='button' class='btn btn-link btn-xs dropdown-toggle waves-effect' data-toggle='dropdown' aria-haspopup='true' aria-expanded='false'>
+                                        <i class="material-icons">settings</i>
+                                        <span class='caret'></span>
+                                    </button>
+                                    <ul class="dropdown-menu">
+                                        <li class="dropdown-header">{{coding_system}}</li>
+                                        <li role='separator' class='divider'></li>
+                                        {{#each coding_systems}}
+                                            <li data-role="coding-systems">
+                                                <a>
+                                                    <input type='radio' id='coding_system_{{this.id}}_{{this.code}}' name='coding_system_{{this.id}}' value='{{this.code}}' {{#if @first}}checked='checked'{{/if}}>
+                                                    <label style="margin-left:2px;" for="coding_system_{{this.id}}_{{this.code}}">{{this.label}}</label>
+                                                </a>
+                                            </li>
+                                        {{/each}}
+                                    </ul>
+                                </div>
                             </div>
                         {{/if}}
                     </div>
