@@ -267,7 +267,7 @@ define([
         // TODO: change API giving the right parameter to use for the Coding Systems
         if (codingSystem !== undefined && codingSystem !== null ) {
             var index = parameter.match(/\d+/)[0];
-            obj.request[id + '_alt_cs'] = codingSystem;
+            obj.request[id + '_cs'] = codingSystem;
         }
 
         log.info('Selector.getSelections', obj);

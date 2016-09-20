@@ -9,9 +9,8 @@ define([
     // Add selector
     'jstree',
     'underscore',
-    'underscore.string',
     'amplify'
-], function ($, log, E, template, API, Tree, _, _s) {
+], function ($, log, E, template, API, Tree, _) {
 
     'use strict';
 
@@ -72,15 +71,17 @@ define([
             domain_code = this.o.code,
             // TODO: report_code should came from the dimension API?
             report_code = this.o.report_code || null,
+            r = {
+                id: id,
+                domain_code: domain_code,
+                show_lists: true
+            },
+            // add report code if not null
+            r = (report_code !== null)? $.extend(true, r, {report_code: report_code}): r,
             self = this;
 
         // retrieve all codes for the subdimension
-        API.codes({
-            id: id,
-            domain_code: domain_code,
-            report_code: report_code,
-            show_lists: true
-        }).then(function(d) {
+        API.codes(r).then(function(d) {
 
             if (d.data.length > 0) {
                 self.initTree(d);

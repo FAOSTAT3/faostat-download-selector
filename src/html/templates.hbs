@@ -23,10 +23,10 @@
                                         <li class="dropdown-header">{{coding_system}}</li>
                                         <li role='separator' class='divider'></li>
                                         {{#each coding_systems}}
-                                            <li data-role="coding-systems">
+                                            <li data-role="coding-systems" style="padding-bottom:3px;">
                                                 <a>
                                                     <input type='radio' id='coding_system_{{this.id}}_{{this.code}}' name='coding_system_{{this.id}}' value='{{this.code}}' {{#if @first}}checked='checked'{{/if}}>
-                                                    <label style="margin-left:2px;" for="coding_system_{{this.id}}_{{this.code}}">{{this.label}}</label>
+                                                    <label for="coding_system_{{this.id}}_{{this.code}}">{{this.label}}</label>
                                                 </a>
                                             </li>
                                         {{/each}}
