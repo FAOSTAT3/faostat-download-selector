@@ -22,16 +22,6 @@ define([
 
         defaultOptions = {
 
-            // coding system
-
-            // summary
-
-            // tabs
-
-            // each tab
-
-            // single or multiple selection tree
-
         };
 
     function Tab() {
