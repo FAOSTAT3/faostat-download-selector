@@ -4,13 +4,12 @@ define([
     'jquery',
     'loglevel',
     'config/Events',
-    'text!fs-s/html/templates.hbs',
     'faostatapiclient',
     // Add selector
     'jstree',
     'underscore',
     'amplify'
-], function ($, log, E, template, API, Tree, _) {
+], function ($, log, E, API, Tree, _) {
 
     'use strict';
 
