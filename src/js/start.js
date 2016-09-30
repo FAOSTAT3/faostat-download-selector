@@ -116,6 +116,8 @@ define([
 
         });
 
+        this.summary.addTabs(this.tabs);
+
         // enable tree filter
         this.enableTreeFilter();
 

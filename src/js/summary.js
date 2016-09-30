@@ -58,43 +58,44 @@ define([
 
     };
 
-    Summary.prototype.render = function () {
+    Summary.prototype.getTreeSelections = function () {
+
+        var self = this,
+            selections = [];
+
+        _.each(this.tabs, function(tab) {
+
+            var values = tab.getSelected();
+
+            _.each(values, function(v) {
+                selections.push(v);
+            });
+
+        });
+
+        return selections;
+
+    };
+
+    Summary.prototype.refresh = function () {
+
+        this.render(this.getTreeSelections());
+
+    };
+
+    Summary.prototype.render = function (selections) {
 
         var html = $(template).filter('#summary_item').html(),
             t = Handlebars.compile(html);
 
-        this.$CONTAINER.html(t({items: this.selections}));
+        this.$CONTAINER.html(t({items: selections}));
 
         this.bindEventListeners();
-        
+
         amplify.publish(E.DOWNLOAD_SELECTION_CHANGE);
 
     };
-
-    Summary.prototype.add = function (items) {
-
-        var self = this;
-
-        // if single selection enabled, reset selections
-        if ( this.o.multiple === false) {
-            self.selections = {};
-        }
-
-        _.each(items, function (v) {
-            self.selections[v.id] = v;
-        });
-
-        this.render();
-
-    };
-
     Summary.prototype.remove = function (item) {
-
-        //log.info('Summary.remove;', item);
-
-        delete this.selections[item.id];
-
-        this.render();
 
         this.o.onRemove(item);
 
@@ -102,22 +103,26 @@ define([
 
     Summary.prototype.deselectAll = function () {
 
-        this.selections = {};
+        this.refresh();
 
-        this.render();
+    };
+
+    Summary.prototype.deselectAll = function () {
+
+        this.refresh();
 
     };
 
     Summary.prototype.getSelections = function () {
 
         var codes = [],
-            self = this;
+            selections = this.getTreeSelections();
 
-        //log.info('Summary.getSelections; this.selections.length:', this.selections.length);
+        //log.info('Summary.getSelections; this.selections.length:', selections.length);
 
-        if ( !_.isEmpty(this.selections)) {
-            _.each(Object.keys(this.selections), function(id) {
-                codes.push(self.selections[id].code);
+        if ( !_.isEmpty(selections)) {
+            _.each(Object.keys(selections), function(id) {
+                codes.push(selections[id].code);
             });
         }
         else {
@@ -131,9 +136,13 @@ define([
             }
         }
 
-        //log.info('Summary.getSelections; codes:', codes);
-
         return codes;
+
+    };
+
+    Summary.prototype.addTabs = function (tabs) {
+
+        this.tabs = tabs;
 
     };
 
