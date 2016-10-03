@@ -330,6 +330,9 @@ define([
 
         });
 
+        // destroying scrolling tabs
+        this.$CONTAINER.find(s.TABS_LIST).scrollingTabs('destroy');
+
     };
 
     Selector.prototype.destroySummary = function() {
