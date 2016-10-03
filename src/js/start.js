@@ -13,6 +13,7 @@ define([
     'underscore',
     // Add selector
     'bootstrap',
+    'jquery.scrolling-tabs',
     'amplify'
 ], function ($, log, E, Common, template, i18nLabels, Tab, Summary, Handlebars, _) {
 
@@ -121,11 +122,20 @@ define([
         // enable tree filter
         this.enableTreeFilter();
 
+        // TODO: check it
+        this.$CONTAINER.find(s.TABS_LIST)
+            .scrollingTabs({
+                scrollToTabEdge: true,
+                disableScrollArrowsOnFullyScrolled: true,
+                forceActiveTab: true
+            }).on('ready.scrtabs', function() {
+                self.$TABS_LIST = self.$CONTAINER.find(s.TABS_LIST);
+                self.$TABS_LIST.find('a:first').tab('show');
+            });
+
     };
 
     Selector.prototype.initTab = function (dimension, index) {
-
-        //log.info('Selector.initTab;', dimension, index);
 
         var id = 'tab_' + Math.random().toString().replace('.', ''),
             htmlTabList = $(template).filter('#tab_header_structure').html(),
@@ -133,6 +143,7 @@ define([
             htmlTabContent = $(template).filter('#tab_content_structure').html(),
             tTabContent = Handlebars.compile(htmlTabContent),
             tab = new Tab(),
+            self = this,
             code = this.o.code,
             report_code = this.o.report_code,
             o = $.extend({
@@ -157,10 +168,10 @@ define([
             callback: (index === 0)? _.bind(this.filterPlaceholder, this) : null
         });
 
-        //log.info('Selector.initTab;', o);
+        log.info('Selector.initTab;', o);
 
         // shows the first tab
-        this.$TABS_LIST.find('a:first').tab('show');
+        //this.$TABS_LIST.find('a:first').tab('show');
 
         return tab;
     };
@@ -195,7 +206,7 @@ define([
 
     Selector.prototype.getActiveTab = function() {
 
-        var tabID = this.$TABS_LIST.find("li.active a").data('tab');
+        var tabID =  this.$TABS_LIST.find("li.active a").data('tab');
         return this.tabs[tabID];
 
     };
@@ -203,7 +214,6 @@ define([
     Selector.prototype.selectAll = function() {
 
         var tab = this.getActiveTab();
-
         tab.selectAll();
 
     };
