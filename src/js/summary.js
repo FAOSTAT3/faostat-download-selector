@@ -67,9 +67,9 @@ define([
 
             var values = tab.getSelected();
 
-            _.each(values, function(v) {
-                selections.push(v);
-            });
+            // TODO: how the sort should work? for the years is not valid the order
+            // sort for each tab in order
+            selections.push.apply(selections, _.sortBy(values, 'label'));
 
         });
 
@@ -117,8 +117,6 @@ define([
 
         var codes = [],
             selections = this.getTreeSelections();
-
-        //log.info('Summary.getSelections; this.selections.length:', selections.length);
 
         if ( !_.isEmpty(selections)) {
             _.each(Object.keys(selections), function(id) {

@@ -238,7 +238,7 @@ define([
 
     Tab.prototype.select = function (item) {
 
-        this.$TREE.jstree("check_node", value.id);
+        this.$TREE.jstree("check_node", item.id);
 
         this.refreshSummary();
 
@@ -289,8 +289,6 @@ define([
             values.push(node.li_attr);
 
         });
-
-        log.info(values)
 
         return values;
 
