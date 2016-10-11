@@ -168,8 +168,6 @@ define([
             callback: (index === 0)? _.bind(this.filterPlaceholder, this) : null
         });
 
-        log.info('Selector.initTab;', o);
-
         // shows the first tab
         //this.$TABS_LIST.find('a:first').tab('show');
 
