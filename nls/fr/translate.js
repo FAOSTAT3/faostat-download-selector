@@ -1,9 +1,11 @@
 /*global define*/
 define({
-    select_all: 'Selec. Tout',
-    clear_all: 'De-Selec. Tout',
-    filter_results: 'Filter results',
-    filter_results_eg: 'Filter results  e.g.',
-    please_make_one_selection: '*Please make at least one selection',
-    coding_system: 'Coding System'
+
+    select_all: 'Tout Sélectionner',
+    clear_all: 'Tout Sfface',
+    filter_results: 'Filtrer les résultats ',
+    filter_results_eg: 'Filtrer les résultats  e.g.',
+    please_make_one_selection: '*Prière de faire une sélection',
+    coding_system: 'Système de codage'
+
 });
