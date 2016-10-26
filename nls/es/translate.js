@@ -1,9 +1,11 @@
 /*global define*/
 define({
-    select_all: 'Seleccionar Todo',
+
+    select_all: 'Seleccionar todo',
     clear_all: 'Limpiar selección',
-    filter_results: 'Filter results',
-    filter_results_eg: 'Filter results  e.g.',
-    please_make_one_selection: '*Please make at least one selection',
-    coding_system: 'Coding System'
+    filter_results: 'Filtrar resultados',
+    filter_results_eg: 'Filtrar resultados, p. ej.',
+    please_make_one_selection: '*Por favor seleccione al menos un elemento',
+    coding_system: 'Sistema de Codificación'
+
 });
