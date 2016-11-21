@@ -86,16 +86,13 @@ define([
 
     Tab.prototype.initTree = function (d) {
 
-        //log.info("Tab.initTree; ", this.o);
-        //log.info("Tab.initTree; ", d.data);
-
         this.cache.data = $.extend(true, {}, d.data);
 
         var data = this.prepareTreeData(d),
-        //multiple = this.o.multiple,
-        // TODO: make it nicer and robust
+            // TODO: make it nicer and robust
+            //multiple = this.o.multiple,
             multiple = (this.o.dimension.options.selectType === 'multi'),
-        // in case is it a single node it will be selected automatically if the tab is visible
+            // in case is it a single node it will be selected automatically if the tab is visible
             isSingleNode = d.data.length === 1? true: false,
             self = this;
 
