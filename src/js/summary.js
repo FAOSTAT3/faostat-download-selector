@@ -4,10 +4,11 @@ define([
     'loglevel',
     'config/Events',
     'text!fs-s/html/templates.hbs',
+    'i18n!fs-s/nls/translate',
     'handlebars',
     'underscore',
     'amplify'
-], function ($, log, E, template, Handlebars, _) {
+], function ($, log, E, template, i18nLabels, Handlebars, _) {
 
     'use strict';
 
@@ -130,7 +131,8 @@ define([
                 amplify.publish(E.SCROLL_TO_SELECTOR, { container: this.$CONTAINER.parent().parent().parent().parent().parent()});
                 //$("html, body").animate({ scrollTop: this.$CONTAINER.parent().parent().parent().parent().parent().offset().top}, "slow");
                 //$('html, body').animate({ scrollTop: this.$CONTAINER.parent().parent().offset().top }, 'slow');
-                this.$CONTAINER.html('<h4 style="color:red">*Please make at least one selection</h4>');
+                // TODO: move to template
+                this.$CONTAINER.html('<h4 style="color:red">'+ i18nLabels.please_make_one_selection + '</h4>');
             }
         }
 
